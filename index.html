@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>capstone beta</title>
+    <script
+    type="module"
+    src="https://gradio.s3-us-west-2.amazonaws.com/3.10.1/gradio.js"
+  ></script>
+  
+</head>
+<body>
+
+    <div class="menu-tog">
+        <span></span>
+        <span></span>
+    </div>
+
+    <div class="menu">
+        <div class="links">
+            <ul>
+                <li class="menu-wrap" onclick="toggleParagraph(this)">
+                    <a>About/<span>01</span></a>
+                    <p class="paragraph" style="display: none;">
+                        lets work together to grow this scene
+                    </p>
+                  </li>
+                  <li class="menu-wrap" onclick="toggleParagraph(this)">
+                    <a>Credit/<span>02</span></a>
+                    <p>not sure yet</p>
+                  </li>
+                  <li class="menu-wrap"><a href="https://stanno.us" target="_blank" rel="noopener noreferrer">Portfolio Site/<span>03</span></a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="header">
+        <span class="wrap">
+            <h1>infinite/place</h1>
+        </span>
+    </div>
+
+    <main class="main">
+
+   
+      <div class="canvas">
+        <!-- <gradio-app src="https://stanno-stablediffusion-infinity-capston-8c6c943.hf.space"></gradio-app>
+       -->
+       <!-- <gradio-app src="https://lnyan-stablediffusion-infinity.hf.space"></gradio-app>
+       -->
+       <iframe
+        src="https://lnyan-stablediffusion-infinity.hf.space"
+        frameborder="0"
+        width="1200"
+        height="800"
+        container="false"
+        info="false"
+        frameBorder="0"
+        ></iframe>
+      
+      </div>
+
+
+    </main>
+    
+    <script src="app.js"></script>
+</body>
+</html>
