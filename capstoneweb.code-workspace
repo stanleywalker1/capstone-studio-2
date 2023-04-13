@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "capstoneweb",
+			"path": "."
+		},
+		{
+			"name": "stablediffusion-infinity-master",
+			"path": "../../../Downloads/stablediffusion-infinity-master"
+		}
+	],
+	"settings": {}
+}

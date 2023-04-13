@@ -1,0 +1,22 @@
+services:
+  sd-infinity:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    #shm_size: '2gb' # Enable if more shared memory is needed
+    ports:
+      - "8888:8888"
+    volumes:
+      - user_home:/home/user
+      - cond_env:/opt/conda/envs
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['0']
+              capabilities: [gpu]
+
+volumes:
+  user_home: {}
+  cond_env: {}

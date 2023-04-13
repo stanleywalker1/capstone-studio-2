@@ -1,0 +1,9 @@
+__pycache__/
+Makefile
+.ipynb_checkpoints/
+build/
+csrc/
+.idea/
+travis.sh
+*.iml
+.token
