@@ -953,7 +953,7 @@ with blocks as demo:
     # title
     title = gr.Markdown(
         """
-    **stablediffusion-infinity**: Outpainting with Stable Diffusion on an infinite canvas: [https://github.com/lkwq007/stablediffusion-infinity](https://github.com/lkwq007/stablediffusion-infinity)
+    **stanley capstone
     """,
         elem_id="markdown",
     )

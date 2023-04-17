@@ -114,12 +114,15 @@ from js import (
     setup_shortcut,
     update_undo_redo,
 )
+#this is where the error is happening 
 
 import micropip
-await pyodide.loadPackage("micropip");
-const micropip = pyodide.pyimport("micropip");
-await micropip.install('boto3');
+await pyodide.loadPackage("micropip")
+micropip = pyodide.pyimport("micropip")
+await micropip.install("boto3")
 import boto3
+
+
 
 
 

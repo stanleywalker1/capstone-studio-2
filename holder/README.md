@@ -2,7 +2,7 @@
 
 <!-- ![Demo Image](temples.png "website preview") -->
 
-<!-- [Live Demo](https://nyc-lostsynagogues.netlify.app/) -->
+<!-- [Live Demo]() -->
 
 capstone project
 ### Tools
