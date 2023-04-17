@@ -84,7 +84,45 @@
   - ./canvas.py
 </py-env>
 
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.864.0.min.js"></script>
+    <script>
+    alert("3");
+    function aws(name, x, y){
+        return `coming from javascript ${name} ${x} ${y}`;
+
+    }
+
+         function uploadfiletoaws(albumName) { 
+            var albumBucketName = "nyucapstone-images";
+                var bucketRegion = "us-east-2";
+                var IdentityPoolId = "us-east-2:1913b386-4748-4dbd-b7b4-74f0bbb2e181";
+
+                AWS.config.update({
+                region: bucketRegion,
+                credentials: new AWS.CognitoIdentityCredentials({
+                    IdentityPoolId: IdentityPoolId
+                })
+                });
+
+                var s3 = new AWS.S3({
+                    apiVersion: '2006-03-01',
+                    params: {Bucket: albumBucketName}
+                });
+             }
+
+        
+    </script>
+
+
+
+
+    
+
+
 <py-script>
+
+
+
 from pyodide import to_js, create_proxy
 from PIL import Image
 import io
@@ -113,14 +151,16 @@ from js import (
     enable_result_lst,
     setup_shortcut,
     update_undo_redo,
+    alert,
+    aws
 )
 #this is where the error is happening 
 
-import micropip
-await pyodide.loadPackage("micropip")
-micropip = pyodide.pyimport("micropip")
-await micropip.install("boto3")
-import boto3
+
+answer = aws("hello", 1, 2)
+console.log(answer)
+
+#addPhoto("demo")
 
 
 
@@ -213,11 +253,7 @@ async def export_func(event):
     link.href = "data:image/png;base64,"+base64_str
     link.click()
 
-    s3 = boto3.resource('s3', aws_access_key_id='AKIA5PDTUHUEBBGAN24X',aws_secret_access_key='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')
-    bucket_name = "nyucapstone-images"
-    image_name = filename + '.png'
-    s3.Bucket(bucket_name).upload_file(image_name, image_name)
-    print(f"file is uploaded to bucket successfully")
+
 
 
     console.log(f"Canvas saved to {filename}.png")
