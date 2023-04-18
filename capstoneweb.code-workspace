@@ -9,5 +9,10 @@
 			"path": "../../../Downloads/stablediffusion-infinity-master"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"[python]": {
+			"editor.defaultFormatter": "ms-python.black-formatter"
+		},
+		"python.formatting.provider": "none"
+	}
 }

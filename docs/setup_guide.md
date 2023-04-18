@@ -89,10 +89,9 @@ conda activate sd-inf
 conda install pytorch torchvision torchaudio -c pytorch-nightly
 conda install scipy scikit-image
 conda install -c conda-forge diffusers transformers ftfy accelerate
-pip install opencv-python
+pip install opencv-python numpy torch timm diffusers scikit-image
 pip install -U gradio
 pip install pytorch-lightning==1.7.7 einops==0.4.1 omegaconf==2.2.3
-pip install timm
 ```
 
 After setup the environment, you can run stablediffusion-infinity with following commands:
