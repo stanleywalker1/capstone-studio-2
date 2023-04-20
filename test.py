@@ -47,3 +47,18 @@ asyncio.run(main())
 
         # def draw_image(self,canvas, x, y, w, h):
         #     self.ctx.drawImage(canvas,x,y,w,h)
+
+
+
+
+
+
+
+
+         function uploadfiletoaws(albumName) { 
+      var albumBucketName = "nyucapstone-images";
+      var bucketRegion = "us-east-2";
+      var IdentityPoolId = "us-east-2:1913b386-4748-4dbd-b7b4-74f0bbb2e181";
+    }
+
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.864.0.min.js"></script>

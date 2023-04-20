@@ -96,21 +96,23 @@ AWS.config.credentials = new AWS.CognitoIdentityCredentials({
 
 
 
-var albumBucketName = "nyucapstone-images";
-var bucketRegion = "us-east-2";
-var IdentityPoolId = "us-east-2:1913b386-4748-4dbd-b7b4-74f0bbb2e181";
+function uploadfiletoaws(albumName) { 
+  var albumBucketName = "nyucapstone-images";
+      var bucketRegion = "us-east-2";
+      var IdentityPoolId = "us-east-2:1913b386-4748-4dbd-b7b4-74f0bbb2e181";
 
-AWS.config.update({
-region: bucketRegion,
-credentials: new AWS.CognitoIdentityCredentials({
-    IdentityPoolId: IdentityPoolId
-})
-});
+      AWS.config.update({
+      region: bucketRegion,
+      credentials: new AWS.CognitoIdentityCredentials({
+          IdentityPoolId: IdentityPoolId
+      })
+      });
 
-var s3 = new AWS.S3({
-    apiVersion: '2006-03-01',
-    params: {Bucket: albumBucketName}
-});
+      var s3 = new AWS.S3({
+          apiVersion: '2006-03-01',
+          params: {Bucket: albumBucketName}
+      });
+   }
 
 
 

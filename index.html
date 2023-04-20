@@ -9,9 +9,12 @@
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/gh/lkwq007/stablediffusion-infinity@v0.1.2/js/fabric.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/gh/lkwq007/stablediffusion-infinity@v0.1.2/js/toolbar.js"></script>
-
 <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
 <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.9/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.9/firebase-analytics-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.9/firebase-database-compat.js"></script>
+
 
 <style>
 #container {
@@ -75,48 +78,58 @@
 <div id="toolbar" style></div>
 </div>
 </div>
+
+
+
+<script>
+alert("3");
+
+
+function aws(name, x, y){
+    return `coming from javascript ${name} ${x} ${y}`;
+}
+
+const firebaseConfig = {
+apiKey: "AIzaSyCxG7s_Wg6RAC4AQ5ZpkCgt0XcnSqcwt-A",
+authDomain: "nyucapstone-7c22c.firebaseapp.com",
+projectId: "nyucapstone-7c22c",
+storageBucket: "nyucapstone-7c22c.appspot.com",
+messagingSenderId: "658619789110",
+appId: "1:658619789110:web:8f198dfe92ec5ec1a74d97",
+measurementId: "G-WJEFZHTTLV"
+};
+
+
+// Initialize Firebase
+const firebaseApp = firebase.initializeApp(firebaseConfig);
+const analytics = firebase.analytics();
+const db = firebase.database();
+
+// Function to upload image data to Firebase database
+function uploadImageDataToFirebase(base64_str, filename) {
+  // Create a reference to the Firebase database
+  const imageRef = db.ref('images/' + filename);
+
+  // Upload the base64 string to the Firebase database
+  imageRef.set({
+    imageData: base64_str
+  }).then(() => {
+    console.log('Image data uploaded successfully.');
+  }).catch((error) => {
+    console.error('Failed to upload image data:', error);
+  });
+}
+
+
+</script>
 <py-env>
 - numpy
 - Pillow
 - micropip:
-  - boto3
+    - boto3
 - paths:
-  - ./canvas.py
+    - ./canvas.py
 </py-env>
-
-    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.864.0.min.js"></script>
-    <script>
-    alert("3");
-    function aws(name, x, y){
-        return `coming from javascript ${name} ${x} ${y}`;
-
-    }
-
-         function uploadfiletoaws(albumName) { 
-            var albumBucketName = "nyucapstone-images";
-                var bucketRegion = "us-east-2";
-                var IdentityPoolId = "us-east-2:1913b386-4748-4dbd-b7b4-74f0bbb2e181";
-
-                AWS.config.update({
-                region: bucketRegion,
-                credentials: new AWS.CognitoIdentityCredentials({
-                    IdentityPoolId: IdentityPoolId
-                })
-                });
-
-                var s3 = new AWS.S3({
-                    apiVersion: '2006-03-01',
-                    params: {Bucket: albumBucketName}
-                });
-             }
-
-        
-    </script>
-
-
-
-
-    
 
 
 <py-script>
@@ -152,7 +165,7 @@ from js import (
     setup_shortcut,
     update_undo_redo,
     alert,
-    aws
+    aws, 
 )
 #this is where the error is happening 
 
@@ -247,6 +260,10 @@ async def export_func(event):
         filename = event.data[2]
     else:
         filename = f"outpaint_{time_str}"
+
+    # Upload image data to Firebase database
+    to_js(uploadImageDataToFirebase)(base64_str, filename)
+
     # link.download = f"sdinf_state_{time_str}.json"
     link.download = f"{filename}.png"
     # link.download = f"outpaint_{time_str}.png"

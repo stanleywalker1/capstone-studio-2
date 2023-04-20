@@ -1,5 +1,16 @@
 # stablediffusion-infinity
 
+PLZ HELP FIGURE OUT WHY THE DATABASE IN index.html IS NOT WORKING
+i believe it's an issue with pyodide 
+- no errors are being thrown, so debugging with:
+- the alert(3) in < script > (not alerting)
+- the console.log in py-script  (not writing to console)
+
+short-term goal is simply saving photos generated to firebase.
+
+
+
+
 Outpainting with Stable Diffusion on an infinite canvas.
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/lkwq007/stablediffusion-infinity/blob/master/stablediffusion_infinity_colab.ipynb)
