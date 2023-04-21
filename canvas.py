@@ -323,7 +323,7 @@ class InfCanvas:
         # self.canvas.clear()
         self.canvas[0].fill_style = "#ffffff"
         self.canvas[0].fill_rect(0, 0, w, h)
-        self.canvas[0].fill_style = "#aaaaaa"
+        #self.canvas[0].fill_style = "#aaaaaa"
         for y in range(y0-stride, h + step, step):
             start = (x0 - val0) if y // step % 2 == 0 else (x0 - val1)
             for x in range(start, w + step, stride):

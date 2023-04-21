@@ -2,14 +2,10 @@
 Update:
 established communication between generated images and firebase, image data is uploaded once accept button is pressed 
 
-
-PLZ HELP FIGURE OUT WHY THE DATABASE IN index.html IS NOT WORKING
-i believe it's an issue with pyodide 
-- no errors are being thrown, so debugging with:
-- the alert(3) in < script > (not alerting)
-- the console.log in py-script  (not writing to console)
-
-short-term goal is simply saving photos generated to firebase.
+next steps:
+- retreive photos from firebase
+- develop server to see other users live on the canvas
+- redesign ui/ux
 
 
 
