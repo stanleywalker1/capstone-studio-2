@@ -1,4 +1,7 @@
 # stablediffusion-infinity
+Update:
+established communication between generated images and firebase, image data is uploaded once accept button is pressed 
+
 
 PLZ HELP FIGURE OUT WHY THE DATABASE IN index.html IS NOT WORKING
 i believe it's an issue with pyodide 
