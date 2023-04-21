@@ -25,7 +25,21 @@ window.onload = function() {
 // };
 
 
-// firebase.initializeApp(firebaseConfig);
-// const analytics = firebase.analytics();
+firebase.initializeApp(firebaseConfig);
+const analytics = firebase.analytics();
 
-
+  const byteArray = new Uint8Array(byteNumbers);
+  const blob = new Blob([byteArray], {type: "image/png"});
+  
+  const storage = firebase.storage.getStorage(fireapp);
+  const storageRef = firebase.storage.ref(storage, `images/${time_str}.png`);
+  const uploadTask = firebase.storage.uploadBytesResumable(storageRef, blob);
+  
+  uploadTask.on("state_changed", (snapshot) => {
+     
+  }, (error) => {
+      console.log("oh no we didn't make it to firebase");
+      
+  }, () => {
+      console.log("to firebase");
+  });

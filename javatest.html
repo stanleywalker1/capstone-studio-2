@@ -1,0 +1,115 @@
+<!-- # await pyodide.loadPackage("micropip");
+# const micropip = pyodide.pyimport("micropip");
+# await micropip.install('boto3');
+# import boto3
+
+# s3 = boto3.client('s3', aws_access_key_id='AKIA5PDTUHUEBBGAN24X',aws_secret_access_key='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')
+# s3.upload_fileobj(img_bytes, bucket_name, key_name)
+
+# print("we made it")
+
+# import micropip
+
+# async def install_boto3():
+#     await micropip.install('boto3') 
+#     package_list = micropip.list()
+#     print(package_list) 
+
+# async def main():
+#     await install_boto3()
+
+# # Call the main function
+# asyncio.run(main())
+
+
+
+
+# from pyodide import to_js, create_proxy
+# pyodide.load_package('boto3')
+
+# s3 = boto3.client('s3', aws_access_key_id='AKIA5PDTUHUEBBGAN24X',aws_secret_access_key='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')
+# s3.upload_fileobj(img_bytes, bucket_name, key_name)
+
+
+            # s3 = pyodide.asgiref.sync.async_to_sync(pyodide.modules['boto3']).client('s3', aws_access_key_id='YOUR_ACCESS_KEY', aws_secret_access_key='YOUR_SECRET_KEY')
+            # s3.upload_fileobj(img_bytes, bucket_name, key_name)
+
+
+
+  # Upload the image to S3
+        # try:
+        #     # response = s3.put_object(Bucket=bucket_name, Key=key_name, Body=img_bytes)
+        #     # print(response)
+        #     s3 = boto3.client('s3', aws_access_key_id='AKIA5PDTUHUEBBGAN24X',aws_secret_access_key='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')
+        #     s3.upload_fileobj(img_bytes, bucket_name, key_name)
+        # except Exception as e:
+        #     print(f"Error uploading image to S3: {e}")
+
+        # def draw_image(self,canvas, x, y, w, h):
+        #     self.ctx.drawImage(canvas,x,y,w,h)
+
+
+
+
+
+
+
+
+    #      function uploadfiletoaws(albumName) { 
+    #   var albumBucketName = "nyucapstone-images";
+    #   var bucketRegion = "us-east-2";
+    #   var IdentityPoolId = "us-east-2:1913b386-4748-4dbd-b7b4-74f0bbb2e181";
+    # } -->
+
+    <!-- # <script src="https://sdk.amazonaws.com/js/aws-sdk-2.864.0.min.js"></script> -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://www.gstatic.com/firebasejs/9.6.9/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.9/firebase-analytics-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.9/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.9/firebase-storage-compat.js"></script>
+	<title>My Page</title>
+</head>
+<body>
+	 <script>
+    alert("3");
+
+    function aws(name, x, y){
+        return `coming from javascript ${name} ${x} ${y}`;
+    }
+
+    const firebaseConfig = {
+    apiKey: "AIzaSyCxG7s_Wg6RAC4AQ5ZpkCgt0XcnSqcwt-A",
+    authDomain: "nyucapstone-7c22c.firebaseapp.com",
+    projectId: "nyucapstone-7c22c",
+    storageBucket: "nyucapstone-7c22c.appspot.com",
+    messagingSenderId: "658619789110",
+    appId: "1:658619789110:web:8f198dfe92ec5ec1a74d97",
+    measurementId: "G-WJEFZHTTLV"
+    };
+
+    // Initialize Firebase
+    const firebaseApp = firebase.initializeApp(firebaseConfig);
+    const analytics = firebase.analytics();
+    const db = firebase.database();
+    const storage = firebase.storage();
+
+    // Function to upload image file to Firebase storage
+    function uploadImageToFirebaseStorage(imageFile, filename) {
+        // Create a reference to the Firebase storage
+        const storageRef = storage.ref('images/' + filename);
+
+        // Upload the image file to the Firebase storage
+        storageRef.put(imageFile).then((snapshot) => {
+            console.log('Image uploaded successfully.');
+        }).catch((error) => {
+            console.error('Failed to upload image:', error);
+        });
+    }
+</script>
+</body>
+</html>
+
+   

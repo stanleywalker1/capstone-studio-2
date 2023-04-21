@@ -11,9 +11,13 @@
 <script defer src="https://cdn.jsdelivr.net/gh/lkwq007/stablediffusion-infinity@v0.1.2/js/toolbar.js"></script>
 <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
 <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.9/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.9/firebase-analytics-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.9/firebase-database-compat.js"></script>
+
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-analytics.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+
+
 
 
 <style>
@@ -80,48 +84,77 @@
 </div>
 
 
-
 <script>
-alert("3");
+    alert("3");
+
+    function aws(name, x, y) {
+        return `coming from javascript ${name} ${x} ${y}`;
+    }
+
+  
+    const { initializeApp } = firebase;
+   
+    const { getStorage, ref, listAll, getDownloadURL, getMetadata, uploadBytesResumable } = firebase.storage;
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCxG7s_Wg6RAC4AQ5ZpkCgt0XcnSqcwt-A",
+        authDomain: "nyucapstone-7c22c.firebaseapp.com",
+        projectId: "nyucapstone-7c22c",
+        storageBucket: "nyucapstone-7c22c.appspot.com",
+        messagingSenderId: "658619789110",
+        appId: "1:658619789110:web:4eb43edacd4bbfcca74d97",
+        measurementId: "G-NCNE4TC0GC"
+    };
+
+   
+    const fireapp = initializeApp(firebaseConfig);
 
 
-function aws(name, x, y){
-    return `coming from javascript ${name} ${x} ${y}`;
+    function uploadImageToFirebase(base64_str, time_str) {
+    return new Promise((resolve, reject) => {
+        alert("step 1");
+        const atob = (str) => {
+            return window.atob(str);
+        };
+
+        const byteCharacters = atob(base64_str);
+        const byteNumbers = new Uint8Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        alert("step 2");
+        
+        const analytics = firebase.analytics();
+
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], {type: "image/png"});
+        alert("step 3");
+
+        const storage = firebase.storage(fireapp);
+        alert("step 4");
+        const storageRef = firebase.storage().ref(`images/${time_str}.png`);
+        alert("step 5");
+        const uploadTask = storageRef.put(blob);
+
+        alert("step 6");
+        // Replace the successful upload handler with this:
+    uploadTask.on("state_changed", (snapshot) => {
+        // Handle the progress of the upload
+    }, (error) => {
+        // Handle the error during the upload
+        reject(error);
+    }, () => {
+        // Handle the successful upload
+        resolve();
+    });
+});
 }
+    
+    
 
-const firebaseConfig = {
-apiKey: "AIzaSyCxG7s_Wg6RAC4AQ5ZpkCgt0XcnSqcwt-A",
-authDomain: "nyucapstone-7c22c.firebaseapp.com",
-projectId: "nyucapstone-7c22c",
-storageBucket: "nyucapstone-7c22c.appspot.com",
-messagingSenderId: "658619789110",
-appId: "1:658619789110:web:8f198dfe92ec5ec1a74d97",
-measurementId: "G-WJEFZHTTLV"
-};
-
-
-// Initialize Firebase
-const firebaseApp = firebase.initializeApp(firebaseConfig);
-const analytics = firebase.analytics();
-const db = firebase.database();
-
-// Function to upload image data to Firebase database
-function uploadImageDataToFirebase(base64_str, filename) {
-  // Create a reference to the Firebase database
-  const imageRef = db.ref('images/' + filename);
-
-  // Upload the base64 string to the Firebase database
-  imageRef.set({
-    imageData: base64_str
-  }).then(() => {
-    console.log('Image data uploaded successfully.');
-  }).catch((error) => {
-    console.error('Failed to upload image data:', error);
-  });
-}
-
-
+    alert("10");
 </script>
+
 <py-env>
 - numpy
 - Pillow
@@ -165,7 +198,8 @@ from js import (
     setup_shortcut,
     update_undo_redo,
     alert,
-    aws, 
+    aws,
+    uploadImageToFirebase
 )
 #this is where the error is happening 
 
@@ -248,31 +282,27 @@ async def draw_canvas_func(event):
     canvas.draw_selection_box()
     base_lst[0]=canvas
   
+
+import js 
+
 async def export_func(event):
-    base=base_lst[0]
-    arr=base.export()
+    base = base_lst[0]
+
+    arr = base.export()
     base.draw_buffer()
     base.canvas[2].clear()
     base64_str = base.numpy_to_base64(arr)
     time_str = time.strftime("%Y%m%d_%H%M%S")
+
+    # The rest of the original export_func code
     link = document.createElement("a")
-    if len(event.data)>2 and event.data[2]:
+    if len(event.data) > 2 and event.data[2]:
         filename = event.data[2]
     else:
         filename = f"outpaint_{time_str}"
-
-    # Upload image data to Firebase database
-    to_js(uploadImageDataToFirebase)(base64_str, filename)
-
-    # link.download = f"sdinf_state_{time_str}.json"
     link.download = f"{filename}.png"
-    # link.download = f"outpaint_{time_str}.png"
-    link.href = "data:image/png;base64,"+base64_str
+    link.href = "data:image/png;base64," + base64_str
     link.click()
-
-
-
-
     console.log(f"Canvas saved to {filename}.png")
 
 img_candidate_lst=[None,0]
@@ -310,14 +340,23 @@ async def undo_func(event):
     base.canvas[2].clear()
 
 async def commit_func(event):
-    base=base_lst[0]
-    img_candidate_lst[0]=None
+    base = base_lst[0]
+    img_candidate_lst[0] = None
     if base.sel_dirty:
         base.write_selection_to_buffer()
         base.draw_buffer()
     base.canvas[2].clear()
-    if len(event.data)>2:
+    if len(event.data) > 2:
         history.append(base.save())
+
+    # Add the image uploading code here
+    arr = base.export()
+    base64_str = base.numpy_to_base64(arr)
+    time_str = time.strftime("%Y%m%d_%H%M%S")
+
+    # Call the JavaScript function to upload the image to Firebase storage
+    await js.uploadImageToFirebase(base64_str, time_str)
+    
 
 async def history_undo_func(event):
     base=base_lst[0]

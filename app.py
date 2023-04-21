@@ -967,7 +967,7 @@ with blocks as demo:
             # model_choices_lst.insert(0, "local_model")
         elif args.remote_model:
             model_path_input_val = args.remote_model
-            # model_choices_lst.insert(0, "remote_model")
+            model_choices_lst.insert(0, "remote_model")
         with gr.Row(elem_id="setup_row"):
             with gr.Column(scale=4, min_width=350):
                 token = gr.Textbox(
