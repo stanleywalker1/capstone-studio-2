@@ -1,4 +1,4 @@
-# stablediffusion-infinity
+# stablediffusion-infinity-creative-sandbox
 Update:
 established communication between generated images and firebase, image data is uploaded once accept button is pressed 
 
