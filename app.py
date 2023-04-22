@@ -123,7 +123,7 @@ def load_html():
 
 def test(x):
     x = load_html()
-    return f"""<iframe id="sdinfframe" style="width: 100%; height: 600px" name="result" allow="midi; geolocation; microphone; camera; 
+    return f"""<iframe id="sdinfframe" style="width: 100%; height: 780px" name="result" allow="midi; geolocation; microphone; camera; 
     display-capture; encrypted-media; vertical-scroll 'none'" sandbox="allow-modals allow-forms 
     allow-scripts allow-same-origin allow-popups 
     allow-top-navigation-by-user-activation allow-downloads" allowfullscreen="" 
@@ -991,7 +991,7 @@ with blocks as demo:
             with gr.Column(scale=1, min_width=100):
                 canvas_height = gr.Number(
                     label="Canvas height",
-                    value=600,
+                    value=700,
                     precision=0,
                     elem_id="canvas_height",
                 )

@@ -2,6 +2,15 @@
 // import { w2ui,w2toolbar,w2field,query,w2alert, w2utils,w2confirm} from "https://cdn.jsdelivr.net/gh/vitmalina/w2ui@master/dist/w2ui.es6.min.js"
 
 // https://stackoverflow.com/questions/36280818/how-to-convert-file-to-base64-in-javascript
+
+document.getElementById("hamburger-menu").addEventListener("click", function() {
+    const toolbar = document.getElementById("toolbar");
+    const currentDisplay = getComputedStyle(toolbar).display;
+    toolbar.style.display = currentDisplay === "none" ? "block" : "none";
+  });
+
+
+
 function getBase64(file) {
    var reader = new FileReader();
    reader.readAsDataURL(file);
@@ -98,9 +107,9 @@ open_setting = function() {
         });
 }
 
-var button_lst=["clear", "load", "save", "export", "upload", "selection", "canvas", "eraser", "outpaint", "accept", "cancel", "retry", "prev", "current", "next", "eraser_size_btn", "eraser_size", "resize_selection", "scale", "zoom_in", "zoom_out", "help"];
-var upload_button_lst=['clear', 'load', 'save', "upload", 'export', 'outpaint', 'resize_selection', 'help', "setting", "interrogate"];
-var resize_button_lst=['clear', 'load', 'save', "upload", 'export', "selection", "canvas", "eraser", 'outpaint', 'resize_selection',"zoom_in", "zoom_out", 'help', "setting", "interrogate"];
+var button_lst=["clear", "load", "save", "export", "upload", "selection", "canvas", "eraser", "accept", "cancel", "retry", "prev", "current", "next", "eraser_size_btn", "eraser_size", "resize_selection", "scale", "zoom_in", "zoom_out", "help"];
+var upload_button_lst=['clear', 'load', 'save', "upload", 'export',  'resize_selection', 'help', "setting", "interrogate"];
+var resize_button_lst=['clear', 'load', 'save', "upload", 'export', "selection", "canvas", "eraser",  'resize_selection',"zoom_in", "zoom_out", 'help', "setting", "interrogate"];
 var outpaint_button_lst=['clear', 'load', 'save', "canvas", "eraser", "upload", 'export', 'resize_selection', "zoom_in", "zoom_out",'help', "setting", "interrogate", "undo", "redo"];
 var outpaint_result_lst=["accept", "cancel", "retry", "prev", "current", "next"];
 var outpaint_result_func_lst=["accept", "retry", "prev", "current", "next"];
@@ -127,7 +136,6 @@ var toolbar=new w2toolbar({
         { type: "radio", id: "canvas", group: "1", tooltip: "Canvas", icon: "fa-solid fa-image" },
         { type: "radio", id: "eraser", group: "1", tooltip: "Eraser", icon: "fa-solid fa-eraser" },
         { type: "break" },
-        { type: "button", id: "outpaint", text: "Outpaint", tooltip: "Run Outpainting", icon: "fa-solid fa-brush" },
         { type: "button", id: "interrogate", text: "Interrogate", tooltip: "Get a prompt with Clip Interrogator ", icon: "fa-solid fa-magnifying-glass" },
         { type: "break" },
         { type: "button", id: "accept", text: "Accept", tooltip: "Accept current result", icon: "fa-solid fa-check", hidden: true, disabled:true,},
@@ -320,7 +328,7 @@ var toolbar=new w2toolbar({
                 if(this.outpaint_tip)
                 {
                     this.outpaint_tip=false;
-                    w2utils.notify("The canvas stays locked until you accept/cancel current outpainting. You can modify the 'sample number' to get multiple results; you can resize the canvas/selection with 'canvas setting'/'resize selection'; you can use 'photometric correction' to help preserve existing contents",{timeout:15000,where:query("#container")})
+                    //w2utils.notify("The canvas stays locked until you accept/cancel current outpainting. You can modify the 'sample number' to get multiple results; you can resize the canvas/selection with 'canvas setting'/'resize selection'; you can use 'photometric correction' to help preserve existing contents",{timeout:15000,where:query("#container")})
                 }
                 document.querySelector("#container").style.pointerEvents="none";
             case "retry":

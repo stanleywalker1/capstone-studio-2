@@ -21,6 +21,15 @@
 
 
 <style>
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+
 #container {
   position: relative;
   margin:auto;
@@ -34,13 +43,129 @@
 .control {
   display: none;
 }
+#outer_container {
+  width: 100%;
+  height: 100vh;
+  overflow: auto;
+}
+
+#hamburger-menu {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  width: 50px;
+  height: 50px;
+  background-color: #f1f1f1;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+#hamburger-menu::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background-image: radial-gradient(circle, #00ff00, #00ffff, #ff00ff, #ff0000, #ffff00, #00ff00);
+  background-size: 300% 300%;
+  animation: gradient-animation 6s linear infinite;
+  z-index: -1;
+}
+
+#hamburger-menu i {
+  font-size: 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.fa-bars {
+  position: relative;
+  display: inline-block;
+  width: 24px;
+  height: 2px;
+  background-color: currentColor;
+  transition: background-color 0.3s ease;
+}
+
+.fa-bars::before,
+.fa-bars::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: currentColor;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.fa-bars::before {
+  top: -6px;
+}
+
+.fa-bars::after {
+  bottom: -6px;
+}
+
+.open .fa-bars {
+  background-color: transparent;
+}
+
+.open .fa-bars::before {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.open .fa-bars::after {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+#toolbar {
+  display: none;
+}
+
+
+
+.generate-button {
+  background-color: #f1f1f1;
+  border: none;
+  color: #333;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+
+
+
 </style>
 
 </head>
 <body>
 <div>
+
 <button type="button" class="control" id="export">Export</button>
-<button type="button" class="control" id="outpaint">Outpaint</button>
+
 <button type="button" class="control" id="undo">Undo</button>
 <button type="button" class="control" id="commit">Commit</button>
 <button type="button" class="control" id="transfer">Transfer</button>
@@ -65,7 +190,14 @@
     </div>
 </fieldset>
 </div>
+<div id="hamburger-menu">
+    <i class="fa-solid fa-bars"></i>
+  </div>
+  <button type="button"id="outpaint">Outpaint</button>
 <div id = "outer_container">
+<div style="position: relative;">
+    <div id="toolbar" style></div>
+</div> 
 <div id = "container">
   <canvas id = "canvas0"></canvas>
   <canvas id = "canvas1"></canvas>
@@ -78,18 +210,33 @@
 </div>
 <input type="file" name="file" id="upload_file" accept="image/*" hidden>
 <input type="file" name="state" id="upload_state" accept=".sdinf" hidden>
-<div style="position: relative;">
-<div id="toolbar" style></div>
+
 </div>
 </div>
 
 
 <script>
-    alert("3");
 
-    function aws(name, x, y) {
-        return `coming from javascript ${name} ${x} ${y}`;
-    }
+        import dotenv from 'dotenv';
+        dotenv.config();
+
+
+        function toggleToolbar() {
+        console.log("Hamburger menu button clicked");
+        const toolbar = document.getElementById("toolbar");
+        const hamburgerMenu = document.getElementById("hamburger-menu");
+        if (toolbar.style.display === "none" || toolbar.style.display === "") {
+            toolbar.style.display = "block";
+            hamburgerMenu.classList.add("open");
+        } else {
+            toolbar.style.display = "none";
+            hamburgerMenu.classList.remove("open");
+        }
+        }
+
+        function aws(name, x, y) {
+            return `coming from javascript ${name} ${x} ${y}`;
+        }
 
   
     const { initializeApp } = firebase;
@@ -151,8 +298,8 @@
 }
     
     
-
-    alert("10");
+document.getElementById("hamburger-menu").addEventListener("click", toggleToolbar);
+  alert("js loaded");
 </script>
 
 <py-env>
@@ -250,8 +397,8 @@ history = History()
 base_lst = [None]
 async def draw_canvas() -> None:
     width=1024
-    height=600
-    canvas=InfCanvas(1024,600)
+    height=700
+    canvas=InfCanvas(1024,700)
     update_eraser(canvas.eraser_size,min(canvas.selection_size_h,canvas.selection_size_w))
     document.querySelector("#container").style.height= f"{height}px"
     document.querySelector("#container").style.width = f"{width}px"

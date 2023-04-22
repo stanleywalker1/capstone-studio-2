@@ -309,6 +309,7 @@ class InfCanvas:
         self.canvas[-1].canvas.addEventListener(
             "wheel", create_proxy(handle_mouse_wheel), False
         )
+        
     def clear_background(self):
         # fake transparent background
         h, w, step = self.height, self.width, self.grid_size
@@ -316,19 +317,23 @@ class InfCanvas:
         x0, y0 = self.view_pos
         x0 = (-x0) % stride
         y0 = (-y0) % stride
-        if y0>=step:
-            val0,val1=stride,step
+        if y0 >= step:
+            val0, val1 = stride, step
         else:
-            val0,val1=step,stride
-        # self.canvas.clear()
-        self.canvas[0].fill_style = "#ffffff"
+            val0, val1 = step, stride
+
+        # Set the background color to a light gray
+        self.canvas[0].fill_style = "#f0f0f0"
         self.canvas[0].fill_rect(0, 0, w, h)
-        #self.canvas[0].fill_style = "#aaaaaa"
-        for y in range(y0-stride, h + step, step):
+
+        # Set the grid color to a slightly darker gray
+        self.canvas[0].fill_style = "#e0e0e0"
+        for y in range(y0 - stride, h + step, step):
             start = (x0 - val0) if y // step % 2 == 0 else (x0 - val1)
             for x in range(start, w + step, stride):
                 self.canvas[0].fill_rect(x, y, step, step)
         self.canvas[0].stroke_rect(0, 0, w, h)
+
 
     def refine_selection(self):
         h,w=self.selection_size_h,self.selection_size_w
