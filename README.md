@@ -1,33 +1,18 @@
 # stablediffusion-infinity-creative-sandbox
-Update:
-established communication between generated images and firebase, image data is uploaded once accept button is pressed 
+
+Infitnite/space is an interactive space for people to come together and collaborate on growning an image. The foundation of this project is based on this repo [stablediffusion-infinity by lkwq007](https://github.com/lkwq007/stablediffusion-infinity) and the concept is inspired by the Reddit project r/place - with the goal to foster creatvity and collaboration among people with generative AI. 
 
 next steps:
-- retreive photos from firebase
-- develop server to see other users live on the canvas
+- layer growing image from firebase onto the canvas once retrieved
+- intergrate liveblocks.io
 - redesign ui/ux
-
-
-add .env file to connect to the image database:
-
-FIREBASE_API_KEY=
-FIREBASE_AUTH_DOMAIN=
-FIREBASE_PROJECT_ID=
-FIREBASE_STORAGE_BUCKET=
-FIREBASE_MESSAGING_SENDER_ID=
-FIREBASE_APP_ID=
-FIREBASE_MEASUREMENT_ID=
+- configure host
 
 
 
+![outpaint](infinite-place-hackathon-demo.jpeg)
 
-Outpainting with Stable Diffusion on an infinite canvas.
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/lkwq007/stablediffusion-infinity/blob/master/stablediffusion_infinity_colab.ipynb)
-[![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/lnyan/stablediffusion-infinity)
-[![Setup Locally](https://img.shields.io/badge/%F0%9F%96%A5%EF%B8%8F%20Setup-Locally-blue)](https://github.com/lkwq007/stablediffusion-infinity/blob/master/docs/setup_guide.md)
-
-![outpaint](https://user-images.githubusercontent.com/1665437/197257616-82c1e58f-7463-4896-8345-6750a828c844.png)
 
 https://user-images.githubusercontent.com/1665437/197244111-51884b3b-dffe-4dcf-a82a-fa5117c79934.mp4
 
@@ -45,6 +30,10 @@ Update: the project add photometric correction to suppress seams, to use this fe
 ## Docs
 
 ### Get Started
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/lkwq007/stablediffusion-infinity/blob/master/stablediffusion_infinity_colab.ipynb)
+[![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/lnyan/stablediffusion-infinity)
+[![Setup Locally](https://img.shields.io/badge/%F0%9F%96%A5%EF%B8%8F%20Setup-Locally-blue)](https://github.com/lkwq007/stablediffusion-infinity/blob/master/docs/setup_guide.md)
 
 - Setup for Windows: [setup_guide](./docs/setup_guide.md#windows)
 - Setup for Linux: [setup_guide](./docs/setup_guide.md#linux)

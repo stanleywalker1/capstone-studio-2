@@ -2,7 +2,7 @@
 <head>
 <title>Stablediffusion Infinity</title>
 <meta charset="utf-8">
-<link rel="icon" type="image/x-icon" href="./favicon.png">
+
 
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/lkwq007/stablediffusion-infinity@v0.1.2/css/w2ui.min.css">
 <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/lkwq007/stablediffusion-infinity@v0.1.2/js/w2ui.min.js"></script>
@@ -16,6 +16,7 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-analytics.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
 
 
@@ -219,7 +220,7 @@ html, body {
 
 
 
-    alert("start");
+    alert("starting js");
 
         function toggleToolbar() {
         console.log("Hamburger menu button clicked");
@@ -238,32 +239,33 @@ html, body {
             return `coming from javascript ${name} ${x} ${y}`;
         }
 
+    
+
   
     const { initializeApp } = firebase;
    
     const { getStorage, ref, listAll, getDownloadURL, getMetadata, uploadBytesResumable } = firebase.storage;
 
-    alert("1");
-   
-    alert("configin");
+
     const firebaseConfig = {
-        apiKey: process.env.FIREBASE_API_KEY,
-        authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-        projectId: process.env.FIREBASE_PROJECT_ID,
-        storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-        messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-        appId: process.env.FIREBASE_APP_ID,
-        measurementId: process.env.FIREBASE_MEASUREMENT_ID
+        apiKey: "AIzaSyCxG7s_Wg6RAC4AQ5ZpkCgt0XcnSqcwt-A",
+        authDomain: "nyucapstone-7c22c.firebaseapp.com",
+        projectId: "nyucapstone-7c22c",
+        storageBucket: "nyucapstone-7c22c.appspot.com",
+        messagingSenderId: "658619789110",
+        appId: "1:658619789110:web:4eb43edacd4bbfcca74d97",
+        measurementId: "G-NCNE4TC0GC",
+        databaseURL: "https://nyucapstone-7c22c-default-rtdb.firebaseio.com/",
     };
 
 
-    alert("2");
+
     const fireapp = initializeApp(firebaseConfig);
 
 
     function uploadImageToFirebase(base64_str, time_str) {
     return new Promise((resolve, reject) => {
-        alert("step 1");
+        alert("starting to upload");
         const atob = (str) => {
             return window.atob(str);
         };
@@ -273,32 +275,40 @@ html, body {
         for (let i = 0; i < byteCharacters.length; i++) {
             byteNumbers[i] = byteCharacters.charCodeAt(i);
         }
-        alert("step 2");
+    
         
         const analytics = firebase.analytics();
 
         const byteArray = new Uint8Array(byteNumbers);
         const blob = new Blob([byteArray], {type: "image/png"});
-        alert("step 3");
+    
 
         const storage = firebase.storage(fireapp);
-        alert("step 4");
+        
+      
         const storageRef = firebase.storage().ref(`images/${time_str}.png`);
-        alert("step 5");
+      
         const uploadTask = storageRef.put(blob);
 
-        alert("step 6");
+        alert("sucessful upload to firebae");
         // Replace the successful upload handler with this:
-    uploadTask.on("state_changed", (snapshot) => {
-        // Handle the progress of the upload
-    }, (error) => {
-        // Handle the error during the upload
-        reject(error);
-    }, () => {
-        // Handle the successful upload
-        resolve();
+        uploadTask.on("state_changed", (snapshot) => {
+            // Handle the progress of the upload
+        }, (error) => {
+            // Handle the error during the upload
+            reject(error);
+        }, async () => {
+            // Handle the successful upload
+            const database = firebase.database();
+            const latestImageRef = database.ref("latestImage");
+            const downloadURL = await storageRef.getDownloadURL();
+            await latestImageRef.set({
+            fileName: `${time_str}.png`,
+            downloadURL: downloadURL
+            });
+            resolve();
+        });
     });
-});
 }
     
     
@@ -350,7 +360,8 @@ from js import (
     update_undo_redo,
     alert,
     aws,
-    uploadImageToFirebase
+    uploadImageToFirebase,
+    firebase
 )
 #this is where the error is happening 
 
@@ -360,6 +371,30 @@ console.log(answer)
 
 #addPhoto("demo")
 
+
+# async def get_latest_image_from_firebase():
+    # alert("get_latest_image_from_firebase called")
+
+    # try:
+        # database = firebase.database()
+        # alert("try called")
+        # latestImageRef = database.ref("latestImage")
+        # latestImageSnapshot = await latestImageRef.once("value")
+        # latestImageInfo = latestImageSnapshot.val()
+
+      
+        # download_url = latestImageInfo["downloadURL"]
+
+       
+        # with pyodide.open_url(download_url) as f:
+           
+            # img = Image.open(f)
+
+        # print("Downloaded image:", str(img))
+        # return img
+    # except Exception as e:
+        # print("Error while getting the latest image from Firebase:", str(e))
+        # return None
 
 
 
@@ -400,6 +435,7 @@ history = History()
 
 base_lst = [None]
 async def draw_canvas() -> None:
+    alert("draw_canvas called")
     width=1024
     height=700
     canvas=InfCanvas(1024,700)
@@ -412,7 +448,23 @@ async def draw_canvas() -> None:
     canvas.draw_selection_box()
     base_lst[0]=canvas
 
+    # latest_image = await get_latest_image_from_firebase()
+
+    # if latest_image is not None:
+        # Log the URL of the latest image to the console
+        # console.log(f"Latest image URL: {latest_image.url}")
+        # Request the parent window to display the latest image on the canvas
+        # (commented out to fix the indentation error)
+        # window.parent.postMessage({ type: "displayLatestImageOnCanvas", image: latest_image }, "*")
+    # else:
+        # print("No latest image found in Firebase.")
+
+    
+
+
+
 async def draw_canvas_func(event):
+    alert("draw_canvas gradio called")
     try:
         app=parent.document.querySelector("gradio-app")
         if app.shadowRoot:
@@ -432,7 +484,19 @@ async def draw_canvas_func(event):
     canvas.draw_buffer()
     canvas.draw_selection_box()
     base_lst[0]=canvas
-  
+
+    # latest_image = await get_latest_image_from_firebase()
+
+    # if latest_image is not None:
+        # alert("if called");
+        # Log the URL of the latest image to the console
+        # console.log(f"Latest image URL: {latest_image.url}")
+        # Request the parent window to display the latest image on the canvas
+        # (commented out to fix the indentation error)
+        # window.parent.postMessage({ type: "displayLatestImageOnCanvas", image: latest_image }, "*")
+    # else:
+        # print("No latest image found in Firebase.")
+        # alert("else called");
 
 import js 
 

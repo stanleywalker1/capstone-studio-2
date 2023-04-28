@@ -3,11 +3,11 @@
 
 // https://stackoverflow.com/questions/36280818/how-to-convert-file-to-base64-in-javascript
 
-document.getElementById("hamburger-menu").addEventListener("click", function() {
-    const toolbar = document.getElementById("toolbar");
-    const currentDisplay = getComputedStyle(toolbar).display;
-    toolbar.style.display = currentDisplay === "none" ? "block" : "none";
-  });
+// document.getElementById("hamburger-menu").addEventListener("click", function() {
+//     const toolbar = document.getElementById("toolbar");
+//     const currentDisplay = getComputedStyle(toolbar).display;
+//     toolbar.style.display = currentDisplay === "none" ? "block" : "none";
+//   });
 
 
 

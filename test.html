@@ -133,3 +133,71 @@ function uploadfiletoaws(albumName) {
   //     })
      
   // }
+
+
+
+
+  # import requests
+
+  # def draw_latest_image_from_firebase(self, database_url):
+  #     # Fetch the latest image URL from Firebase
+  #     image_url, image_name = get_latest_image_url(database_url)
+
+  #     # Fetch the image from the URL
+  #     response = requests.get(image_url)
+  #     image = Image.open(io.BytesIO(response.content))
+
+  #     # Convert the image to a NumPy array
+  #     image_array = np.array(image)
+
+  #     # Draw the image on the canvas using the CanvasProxy class
+  #     self.canvas[0].put_image_data(image_array, x, y)  # Replace x and y with desired coordinates
+      
+  #     return image_url, image_name
+
+
+
+  # inf_canvas = InfCanvas(...)
+# database_url = 'https://nyucapstone-7c22c-default-rtdb.firebaseio.com'
+# latest_image_url, latest_image_name = inf_canvas.draw_latest_image_from_firebase(database_url)
+# print(f"Latest image URL: {latest_image_url}")
+
+
+
+
+
+
+# async def fetch_latest_image_url(database_url):
+#     response = await pyfetch(f"{database_url}/latestImage.json")
+#     latest_image_data = await response.json()
+#     image_url = latest_image_data['downloadURL']
+#     image_name = latest_image_data['fileName']
+#     return image_url, image_name
+
+# async def main():
+#     database_url = 'https://nyucapstone-7c22c-default-rtdb.firebaseio.com'
+#     latest_image_url, latest_image_name = await fetch_latest_image_url(database_url)
+#     print(f"Latest image URL: {latest_image_url}")
+#     print(f"Latest image name: {latest_image_name}")
+
+# # Call the main function
+# import asyncio
+# asyncio.run(main())
+
+
+
+app.py CALL FROM FIREBASE WORKING FUNCTION
+
+# import requests
+
+# def get_latest_image_url(database_url):
+#     response = requests.get(f"{database_url}/latestImage.json")
+#     latest_image_data = response.json()
+#     image_url = latest_image_data['downloadURL']
+#     image_name = latest_image_data['fileName']
+#     return image_url, image_name
+
+# database_url = 'https://nyucapstone-7c22c-default-rtdb.firebaseio.com'
+# latest_image_url, latest_image_name = get_latest_image_url(database_url)
+# print(f"Latest image URL: {latest_image_url}")
+# print(f"Latest image name: {latest_image_name}")
