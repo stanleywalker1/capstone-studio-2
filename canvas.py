@@ -4,6 +4,7 @@ import io
 import numpy as np
 from PIL import Image
 from pyodide import to_js, create_proxy
+from pyodide.http import pyfetch
 
 import gc
 from js import (
@@ -16,7 +17,10 @@ from js import (
     requestAnimationFrame,
     update_overlay,
     setup_overlay,
-    window
+    window,
+    alert,
+    fetch,
+    console
 )
 
 PAINT_SELECTION = "selection"
@@ -26,6 +30,34 @@ NOP_MODE = 0
 PAINT_MODE = 1
 IMAGE_MODE = 2
 BRUSH_MODE = 3
+
+async def fetch_latest_image_url(database_url):
+    console.log("fetch_latest_image called")
+    # different methods to call
+    response = await fetch(f"{database_url}/latestImage.json")
+    console.log(f"response status: {response.status}, status text: {response.statusText}")
+    
+    latest_image_data = await response.json()
+    latest_image_data = latest_image_data.to_py()
+
+    image_url = latest_image_data["downloadURL"]
+    image_name = latest_image_data["fileName"]
+    console.log(f"Latest image URL: {image_url}")
+    console.log(f"Latest image name: {image_name}")
+    return image_url, image_name
+
+async def main():
+    database_url = "https://nyucapstone-7c22c-default-rtdb.firebaseio.com"
+    latest_image_url, latest_image_name = await fetch_latest_image_url(database_url)
+    console.log(f"async def main() called")
+    
+
+# Call the main function
+# import asyncio
+# loop = asyncio.get_event_loop()
+# loop.run_until_complete(main())
+
+await main()
 
 
 def hold_canvas():

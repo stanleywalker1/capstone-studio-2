@@ -48,8 +48,8 @@ def get_latest_image_url(database_url):
 
 database_url = 'https://nyucapstone-7c22c-default-rtdb.firebaseio.com'
 latest_image_url, latest_image_name = get_latest_image_url(database_url)
-print(f"Latest image URL: {latest_image_url}")
-print(f"Latest image name: {latest_image_name}")
+# print(f"Latest image URL: {latest_image_url}")
+# print(f"Latest image name: {latest_image_name}")
 
 try:
     abspath = os.path.abspath(__file__)
