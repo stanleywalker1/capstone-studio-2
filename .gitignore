@@ -8,3 +8,4 @@ travis.sh
 *.iml
 .token
 .env
+.firebase.json
