@@ -31,33 +31,39 @@ PAINT_MODE = 1
 IMAGE_MODE = 2
 BRUSH_MODE = 3
 
-async def fetch_latest_image_url(database_url):
-    console.log("fetch_latest_image called")
-    # different methods to call
-    response = await fetch(f"{database_url}/latestImage.json")
-    console.log(f"response status: {response.status}, status text: {response.statusText}")
+# async def fetch_latest_image_url(database_url):
+#     console.log("fetch_latest_image called")
+#     # different methods to call
+#     response = await fetch(f"{database_url}/latestImage.json")
+#     console.log(f"response status: {response.status}, status text: {response.statusText}")
     
-    latest_image_data = await response.json()
-    latest_image_data = latest_image_data.to_py()
+#     latest_image_data = await response.json()
+#     latest_image_data = latest_image_data.to_py()
 
-    image_url = latest_image_data["downloadURL"]
-    image_name = latest_image_data["fileName"]
-    console.log(f"Latest image URL: {image_url}")
-    console.log(f"Latest image name: {image_name}")
-    return image_url, image_name
+#     image_url = latest_image_data["downloadURL"]
+#     image_name = latest_image_data["fileName"]
+#     console.log(f"Latest image URL: {image_url}")
+#     console.log(f"Latest image name: {image_name}")
+#     return image_url, image_name
 
-async def main():
-    database_url = "https://nyucapstone-7c22c-default-rtdb.firebaseio.com"
-    latest_image_url, latest_image_name = await fetch_latest_image_url(database_url)
-    console.log(f"async def main() called")
-    
 
-# Call the main function
-# import asyncio
-# loop = asyncio.get_event_loop()
-# loop.run_until_complete(main())
+from js import Image as JsImage
 
-await main()
+
+# async def load_and_draw_image(image_url):
+#     console.log("load_and_draw_image_called")
+#     # Load the image using the fetched URL
+#     image = JsImage.new()
+#     image.src = image_url
+
+#     # Wait for the image to load
+#     await image.decode()
+
+#     # Draw the loaded image onto the target canvas
+#     # inf_canvas.ctx[1].drawImage(image, 0, 0)
+
+#     console.log("load_and_draw_image complete")
+
 
 
 def hold_canvas():
@@ -89,12 +95,14 @@ def multi_canvas(layer, width=800, height=600):
     return lst
 
 
+
 class CanvasProxy:
     def __init__(self, canvas, width=800, height=600) -> None:
         self.canvas = canvas
         self.ctx = prepare_canvas(width, height, canvas)
         self.width = width
         self.height = height
+        # self.imageURL = fetch_latest_image_url("https://nyucapstone-7c22c-default-rtdb.firebaseio.com")
 
     def clear_rect(self, x, y, w, h):
         self.ctx.clearRect(x, y, w, h)
@@ -115,10 +123,23 @@ class CanvasProxy:
         self.ctx.putImageData(image_data, x, y)
         del image_data
 
+    # def load_image_data(self, image, x, y):
+    #     data = Uint8ClampedArray.new(to_js(self.imageURL.image_url.tobytes()))
+    #     height, width, _ = image.shape
+    #     image_data = ImageData.new(data, width, height)
+    #     self.ctx.putImageData(image_data, x, y)
+    #     del image_data
+    
+
+    
+
     # def draw_image(self,canvas, x, y, w, h):
     #     self.ctx.drawImage(canvas,x,y,w,h)
     def draw_image(self,canvas, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight):
         self.ctx.drawImage(canvas, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight)
+    
+    # def draw_image(self, img, x, y):
+    #     self.ctx.drawImage(img, x, y)
 
     @property
     def stroke_style(self):
@@ -183,6 +204,35 @@ class InfCanvas:
         self.show_brush = False
         self.scale=1.0
         self.eraser_size=32
+    
+    # async def load_and_draw_image(self, image_url):
+    #     console.log("load_and_draw_image_called")
+    #     # Load the image using the fetched URL
+    #     image = JsImage.new()
+    #     image.src = image_url
+
+    #     # Wait for the image to load
+    #     await image.decode()
+
+    #      # Create a temporary canvas and context
+    #     temp_canvas = document.createElement("canvas")
+    #     temp_canvas.width = image.width
+    #     temp_canvas.height = image.height
+    #     temp_ctx = temp_canvas.getContext("2d")
+
+    #     # Draw the loaded image onto the temporary canvas
+    #     temp_ctx.drawImage(image, 0, 0)
+
+    #     # Get the image data from the temporary canvas
+    #     image_data = temp_ctx.getImageData(0, 0, image.width, image.height)
+
+    #     # Convert the image data to a NumPy array
+    #     np_image = np.frombuffer(image_data.data, dtype=np.uint8).reshape(image.height, image.width, 4)
+
+    #     console.log("load_and_draw_image complete")
+
+    #     return np_image
+
 
     def reset_large_buffer(self):
         self.canvas[2].canvas.width=self.width
@@ -343,25 +393,32 @@ class InfCanvas:
             "wheel", create_proxy(handle_mouse_wheel), False
         )
     def clear_background(self):
-        # fake transparent background
-        h, w, step = self.height, self.width, self.grid_size
-        stride = step * 2
+       # fake transparent background
+        h, w, step = self.height, self.width, self.grid_size // 4  # Reduce the grid size for more lines
         x0, y0 = self.view_pos
-        x0 = (-x0) % stride
-        y0 = (-y0) % stride
-        if y0>=step:
-            val0,val1=stride,step
-        else:
-            val0,val1=step,stride
-        # self.canvas.clear()
-        self.canvas[0].fill_style = "#ffffff"
-        self.canvas[0].fill_rect(0, 0, w, h)
-        self.canvas[0].fill_style = "#aaaaaa"
-        for y in range(y0-stride, h + step, step):
-            start = (x0 - val0) if y // step % 2 == 0 else (x0 - val1)
-            for x in range(start, w + step, stride):
-                self.canvas[0].fill_rect(x, y, step, step)
-        self.canvas[0].stroke_rect(0, 0, w, h)
+        x0 = (-x0) % step
+        y0 = (-y0) % step
+
+        ctx = self.canvas[0].ctx  # Access the CanvasRenderingContext2D object
+
+        ctx.fillStyle = "white"  # Change the fill style to white
+        ctx.fillRect(0, 0, w, h)
+        ctx.strokeStyle = "rgba(0, 0, 0, 0.55)"  # Change the stroke style to transparent black
+        ctx.lineWidth = 0.5  # Make the grid lines thinner
+
+        # Draw horizontal lines
+        for y in range(y0, h + step, step):
+            ctx.beginPath()
+            ctx.moveTo(0, y)
+            ctx.lineTo(w, y)
+            ctx.stroke()
+
+        # Draw vertical lines
+        for x in range(x0, w + step, step):
+            ctx.beginPath()
+            ctx.moveTo(x, 0)
+            ctx.lineTo(x, h)
+            ctx.stroke()
 
     def refine_selection(self):
         h,w=self.selection_size_h,self.selection_size_w
@@ -504,9 +561,63 @@ class InfCanvas:
             cur,
         )
 
+    # def draw_buffer(self, np_image):
+    #     self.canvas[1].clear()
+
+    #     height, width, _ = np_image.shape
+    #     image_data = self.canvas[1].create_image_data(width, height)
+    #     image_data.data.set(np_image.ravel())
+
+    #     self.canvas[1].put_image_data(self.buffer, 0, 0)
+
+    async def load_image(self, image_data):
+        # image_url, image_name = await fetch_latest_image_url(database_url)
+
+        # image = JsImage.new()
+        # image.src = image_url
+
+        #     # Wait for the image to load
+        # await image.decode()
+
+        # # Create a temporary canvas and context
+        # temp_canvas = JsCanvas.new()
+        # temp_canvas.width = image.width
+        # temp_canvas.height = image.height
+        # temp_ctx = temp_canvas.get_context("2d")
+
+        # # Draw the image onto the temporary canvas
+        # temp_ctx.draw_image(image, 0, 0)
+
+        # # Get the ImageData from the temporary canvas
+        # image_data = temp_ctx.get_image_data(0, 0, image.width, image.height)
+
+        
+
+        console.log(f"back in load_image: {image_data}")
+
+        pil_image = Image.open(io.BytesIO(image_data.to_py()))
+
+        np_image = np.array(pil_image)
+
+
+
+        self.canvas[1].put_image_data(np_image, 0, 0)
+
+
+
+        console.log("image loaded inside InfCanvas")
+
+        #  return image_data
+
+
+
     def draw_buffer(self):
         self.canvas[1].clear()
         self.canvas[1].put_image_data(self.buffer, 0, 0)
+        # self.canvas[1].load_image_data(self.buffer, 0, 0)
+        # self.canvas[1].load_and_draw_image("https://firebasestorage.googleapis.com/v0/b/nyucapstone-7c22c.appspot.com/o/images%2F20230428_234128.png?alt=media&token=1ca7477f-ccd9-41cf-b706-2b594c0df6cf")
+
+
 
     def fill_selection(self, img):
         self.sel_buffer = img
@@ -679,3 +790,43 @@ class InfCanvas:
             return np.zeros(
                 (self.selection_size_h, self.selection_size_w, 4), dtype=np.uint8
             )
+
+
+
+
+# async def main():
+#     database_url = "https://nyucapstone-7c22c-default-rtdb.firebaseio.com"
+#     latest_image_url, latest_image_name = await fetch_latest_image_url(database_url)
+#     console.log(f"async def main() called")
+#     await load_and_draw_image(latest_image_url)
+
+
+#     # Load and draw the image on the second CanvasProxy instance (index 1)
+#     # await load_and_draw_image(latest_image_url)
+
+#     console.log("Image drawn on the canvas from main")
+
+# await main()
+
+
+
+# async def main():
+#     database_url = "https://nyucapstone-7c22c-default-rtdb.firebaseio.com"
+#     latest_image_url, latest_image_name = await fetch_latest_image_url(database_url)
+#     console.log(f"async def main() called")
+#     await load_and_draw_image_wrapper(latest_image_url)
+
+   
+
+#     # Load and draw the image on the InfCanvas
+#     # np_image = await inf_canvas.load_and_draw_image(latest_image_url)
+#     # inf_canvas.draw_buffer(np_image)
+#     console.log("Image drawn on the canvas from main")
+    
+
+# # Call the main function
+# # import asyncio
+# # loop = asyncio.get_event_loop()
+# # loop.run_until_complete(main())
+
+# await main()
