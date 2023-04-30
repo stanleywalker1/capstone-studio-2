@@ -9,3 +9,5 @@ travis.sh
 .token
 .env
 .firebase.json
+.test.html
+.test.py
