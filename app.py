@@ -983,6 +983,10 @@ with blocks as demo:
     # frame
     frame = gr.HTML(test(2), visible=RUN_IN_SPACE)
     # setup
+
+    setup_button = gr.Button("Click to Setup (may take a while)", variant="primary")
+   
+
     if not RUN_IN_SPACE:
         model_choices_lst = [item.value for item in ModelChoice]
         if args.local_model:
@@ -991,102 +995,103 @@ with blocks as demo:
         elif args.remote_model:
             model_path_input_val = args.remote_model
             model_choices_lst.insert(0, "remote_model")
-        with gr.Row(elem_id="setup_row"):
-            with gr.Column(scale=4, min_width=350):
-                token = gr.Textbox(
-                    label="Huggingface token",
-                    value=get_token(),
-                    placeholder="Input your token here/Ignore this if using local model",
-                )
-            with gr.Column(scale=3, min_width=320):
-                model_selection = gr.Radio(
-                    label="Choose a model type here",
-                    choices=model_choices_lst,
-                    value=ModelChoice.INPAINTING.value if onnx_available else ModelChoice.INPAINTING2.value,
-                )
-            with gr.Column(scale=1, min_width=100):
-                canvas_width = gr.Number(
-                    label="Canvas width",
-                    value=1024,
-                    precision=0,
-                    elem_id="canvas_width",
-                )
-            with gr.Column(scale=1, min_width=100):
-                canvas_height = gr.Number(
-                    label="Canvas height",
-                    value=700,
-                    precision=0,
-                    elem_id="canvas_height",
-                )
-            with gr.Column(scale=1, min_width=100):
-                selection_size = gr.Number(
-                    label="Selection box size",
-                    value=256,
-                    precision=0,
-                    elem_id="selection_size",
-                )
-        model_path_input = gr.Textbox(
-            value=model_path_input_val,
-            label="Custom Model Path (You have to select a correct model type for your local model)",
-            placeholder="Ignore this if you are not using Docker",
-            elem_id="model_path_input",
+
+        sd_prompt = gr.Textbox(
+            label="Prompt", placeholder="input your prompt here!", lines=2
         )
-        setup_button = gr.Button("Click to Setup (may take a while)", variant="primary")
-    with gr.Row():
-        with gr.Column(scale=3, min_width=270):
-            init_mode = gr.Dropdown(
-                label="Init Mode",
-                choices=[
-                    "patchmatch",
-                    "edge_pad",
-                    "cv2_ns",
-                    "cv2_telea",
-                    "perlin",
-                    "gaussian",
-                    "g_diffuser",
-                ],
-                value="patchmatch",
-                type="value",
-            )
-            postprocess_check = gr.Radio(
-                label="Photometric Correction Mode",
-                choices=["disabled", "mask_mode", "border_mode",],
-                value="disabled",
-                type="value",
-            )
-            # canvas control
+        with gr.Accordion("developer tools", open=True):
+            with gr.Row(elem_id="setup_row"):
+                with gr.Column(scale=4, min_width=350):
+                    token = gr.Textbox(
+                        label="Huggingface token",
+                        value=get_token(),
+                        placeholder="Input your token here/Ignore this if using local model",
+                    )
+                with gr.Column(scale=3, min_width=320):
+                    model_selection = gr.Radio(
+                        label="Choose a model type here",
+                        choices=model_choices_lst,
+                        value=ModelChoice.INPAINTING.value if onnx_available else ModelChoice.INPAINTING2.value,
+                    )
+                with gr.Column(scale=1, min_width=100):
+                    canvas_width = gr.Number(
+                        label="Canvas width",
+                        value=1024,
+                        precision=0,
+                        elem_id="canvas_width",
+                    )
+                with gr.Column(scale=1, min_width=100):
+                    canvas_height = gr.Number(
+                        label="Canvas height",
+                        value=700,
+                        precision=0,
+                        elem_id="canvas_height",
+                    )
+                with gr.Column(scale=1, min_width=100):
+                    selection_size = gr.Number(
+                        label="Selection box size",
+                        value=256,
+                        precision=0,
+                        elem_id="selection_size",
+                    )
+                with gr.Column(scale=3, min_width=270):
+                    init_mode = gr.Dropdown(
+                        label="Init Mode",
+                        choices=[
+                            "patchmatch",
+                            "edge_pad",
+                            "cv2_ns",
+                            "cv2_telea",
+                            "perlin",
+                            "gaussian",
+                            "g_diffuser",
+                        ],
+                        value="patchmatch",
+                        type="value",
+                    )
+                    postprocess_check = gr.Radio(
+                        label="Photometric Correction Mode",
+                        choices=["disabled", "mask_mode", "border_mode",],
+                        value="disabled",
+                        type="value",
+                    )
+                    # canvas control
 
-        with gr.Column(scale=3, min_width=270):
-            sd_prompt = gr.Textbox(
-                label="Prompt", placeholder="input your prompt here!", lines=2
+                with gr.Column(scale=3, min_width=270):
+                    sd_negative_prompt = gr.Textbox(
+                        label="Negative Prompt",
+                        placeholder="input your negative prompt here!",
+                        lines=2,
+                    )
+                with gr.Column(scale=2, min_width=150):
+                    with gr.Group():
+                        with gr.Row():
+                            sd_generate_num = gr.Number(
+                                label="Sample number", value=1, precision=0
+                            )
+                            sd_strength = gr.Slider(
+                                label="Strength",
+                                minimum=0.0,
+                                maximum=1.0,
+                                value=1.0,
+                                step=0.01,
+                            )
+                        with gr.Row():
+                            sd_scheduler = gr.Dropdown(
+                                list(scheduler_dict.keys()), label="Scheduler", value="DPM"
+                            )
+                            sd_scheduler_eta = gr.Number(label="Eta", value=0.0)
+                with gr.Column(scale=1, min_width=80):
+                    sd_step = gr.Number(label="Step", value=25, precision=0)
+                    sd_guidance = gr.Number(label="Guidance", value=7.5)
+                
+            model_path_input = gr.Textbox(
+                value=model_path_input_val,
+                label="Custom Model Path (You have to select a correct model type for your local model)",
+                placeholder="Ignore this if you are not using Docker",
+                elem_id="model_path_input",
             )
-            sd_negative_prompt = gr.Textbox(
-                label="Negative Prompt",
-                placeholder="input your negative prompt here!",
-                lines=2,
-            )
-        with gr.Column(scale=2, min_width=150):
-            with gr.Group():
-                with gr.Row():
-                    sd_generate_num = gr.Number(
-                        label="Sample number", value=1, precision=0
-                    )
-                    sd_strength = gr.Slider(
-                        label="Strength",
-                        minimum=0.0,
-                        maximum=1.0,
-                        value=1.0,
-                        step=0.01,
-                    )
-                with gr.Row():
-                    sd_scheduler = gr.Dropdown(
-                        list(scheduler_dict.keys()), label="Scheduler", value="DPM"
-                    )
-                    sd_scheduler_eta = gr.Number(label="Eta", value=0.0)
-        with gr.Column(scale=1, min_width=80):
-            sd_step = gr.Number(label="Step", value=25, precision=0)
-            sd_guidance = gr.Number(label="Guidance", value=7.5)
-
+    
     proceed_button = gr.Button("Proceed", elem_id="proceed", visible=DEBUG_MODE)
     xss_js = load_js("xss").replace("\n", " ")
     xss_html = gr.HTML(
@@ -1226,4 +1231,3 @@ elif args.debug:
     demo.queue().launch(**launch_kwargs)
 else:
     demo.queue().launch(**launch_kwargs)
-

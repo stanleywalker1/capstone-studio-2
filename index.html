@@ -166,7 +166,6 @@ html, body {
 <div>
 
 <button type="button" class="control" id="export">Export</button>
-
 <button type="button" class="control" id="undo">Undo</button>
 <button type="button" class="control" id="commit">Commit</button>
 <button type="button" class="control" id="transfer">Transfer</button>
@@ -486,37 +485,50 @@ async def draw_canvas_func(event):
         selection_size=384
     document.querySelector("#container").style.width = f"{width}px"
     document.querySelector("#container").style.height= f"{height}px"
-    canvas=InfCanvas(int(width),int(height),selection_size=int(selection_size))
 
     database_url = "https://nyucapstone-7c22c-default-rtdb.firebaseio.com"
     image_data, latest_image_name = await fetch_latest_image_url(database_url)
+    pil_image = Image.open(io.BytesIO(image_data.to_py()))
+
+    np_image = np.array(pil_image)
+
+    canvas=InfCanvas(int(width),int(height),selection_size=int(selection_size),firebase_image_data=np_image)
 
 
-    
-    
     canvas.setup_mouse()
     canvas.clear_background()
     canvas.draw_buffer()
     canvas.draw_selection_box()
 
-    await canvas.load_image(image_data)
+    # await canvas.load_image(image_data)
+
+
+    # Update the canvas buffer with the new image data and redraw the buffer
+    h, w, c = canvas.buffer.shape
+    canvas.sync_to_buffer()
+    canvas.buffer_dirty = True
+
+    h_min = min(h, np_image.shape[0])
+    w_min = min(w, np_image.shape[1])
+
+
+
+    #  mask = np_image[:, :, 3:4].repeat(4, axis=2)
+    #  canvas.buffer[mask > 0] = 0
+    #  canvas.buffer[0:h, 0:w, :] += np_image
+
+    mask = np_image[:h_min, :w_min, 3:4].repeat(4, axis=2)
+    canvas.buffer[:h_min, :w_min][mask > 0] = 0
+    canvas.buffer[:h_min, :w_min] += np_image[:h_min, :w_min]
+    
+    
+    
+    canvas.draw_buffer()
 
     base_lst[0]=canvas
 
     alert("made it to end of draw_canvas gradio")
 
-    # latest_image = await get_latest_image_from_firebase()
-
-    # if latest_image is not None:
-        # alert("if called");
-        # Log the URL of the latest image to the console
-        # console.log(f"Latest image URL: {latest_image.url}")
-        # Request the parent window to display the latest image on the canvas
-        # (commented out to fix the indentation error)
-        # window.parent.postMessage({ type: "displayLatestImageOnCanvas", image: latest_image }, "*")
-    # else:
-        # print("No latest image found in Firebase.")
-        # alert("else called");
 
 import js 
 
@@ -584,7 +596,7 @@ async def commit_func(event):
     if len(event.data) > 2:
         history.append(base.save())
 
-    # Add the image uploading code here
+    # sending the image to firebase here
     arr = base.export()
     base64_str = base.numpy_to_base64(arr)
     time_str = time.strftime("%Y%m%d_%H%M%S")
@@ -636,6 +648,7 @@ async def transfer_func(event):
 async def upload_func(event):
     base=base_lst[0]
     # base64_str=event.data[1]
+    # Retrieve the base64 encoded image string from the #upload_content HTML element
     base64_str=document.querySelector("#upload_content").value
     base64_str=base64_str.split(",")[-1]
     # base64_str=parent.document.querySelector("gradio-app").shadowRoot.querySelector("#upload textarea").value
