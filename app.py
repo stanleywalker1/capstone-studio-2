@@ -38,12 +38,13 @@ from enum import Enum
 from utils import *
 
 # load environment variables from the .env file
-with open(".env") as f:
-    for line in f:
-        if line.startswith("#") or not line.strip():
-            continue
-        name, value = line.strip().split("=", 1)
-        os.environ[name] = value
+if os.path.exists(".env"):
+    with open(".env") as f:
+        for line in f:
+            if line.startswith("#") or not line.strip():
+                continue
+            name, value = line.strip().split("=", 1)
+            os.environ[name] = value
 
 
 access_token = os.environ.get("HF_ACCESS_TOKEN")
