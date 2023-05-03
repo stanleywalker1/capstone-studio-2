@@ -1,4 +1,3 @@
-import boto3
 import io
 import base64
 import os
