@@ -35,30 +35,30 @@ BRUSH_MODE = 3
 from js import Image as JsImage
 
 
-async def fetch_latest_image_url(database_url):
-        console.log("fetch_latest_image called from canvas")
-        # different methods to call
-        response = await fetch(f"{database_url}/latestImage.json")
-        console.log(f"response status: {response.status}, status text: {response.statusText}")
+# async def fetch_latest_image_url(database_url):
+#         console.log("fetch_latest_image called from canvas")
+#         # different methods to call
+#         response = await fetch(f"{database_url}/latestImage.json")
+#         console.log(f"response status: {response.status}, status text: {response.statusText}")
         
-        latest_image_data = await response.json()
-        latest_image_data = latest_image_data.to_py()
+#         latest_image_data = await response.json()
+#         latest_image_data = latest_image_data.to_py()
 
-        image_url = latest_image_data["downloadURL"]
-        image_name = latest_image_data["fileName"]
-        console.log(f"Latest image URL from canvas: {image_url}")
-        console.log(f"Latest image name from canvas: {image_name}")
+#         image_url = latest_image_data["downloadURL"]
+#         image_name = latest_image_data["fileName"]
+#         console.log(f"Latest image URL from canvas: {image_url}")
+#         console.log(f"Latest image name from canvas: {image_name}")
 
-        # Fetch the image data as ArrayBuffer
-        image_response = await fetch(image_url)
-        image_data = await image_response.arrayBuffer()
+#         # Fetch the image data as ArrayBuffer
+#         image_response = await fetch(image_url)
+#         image_data = await image_response.arrayBuffer()
         
         
-        return image_data, image_name
+#         return image_data, image_name
 
-database_url = "https://nyucapstone-7c22c-default-rtdb.firebaseio.com"
+# database_url = "https://nyucapstone-7c22c-default-rtdb.firebaseio.com"
 
-image_data, latest_image_name = await fetch_latest_image_url(database_url)
+# image_data, latest_image_name = await fetch_latest_image_url(database_url)
 
 def hold_canvas():
     pass
@@ -528,21 +528,18 @@ class InfCanvas:
 
 
     async def load_image(self, image_data):
-
-        console.log(f"back in load_image: {image_data}")
-
+        # original testing, not being called
         pil_image = Image.open(io.BytesIO(image_data.to_py()))
         np_image = np.array(pil_image)
 
         self.canvas[1].put_image_data(np_image, 0, 0)
-        
-        console.log("image loaded inside InfCanvas")
+
 
 
     def draw_buffer(self):
         self.canvas[1].clear()
         self.canvas[1].put_image_data(self.buffer, 0, 0)
-        print(f"self buffer: {self.buffer}") 
+        #print(f"self buffer: {self.buffer}") 
 
         # self.canvas[1].put_image_data(self.firebase_image_data, 0, 0)
         # print(f"self buffer: {self.firebase_image_data}") 
@@ -719,43 +716,3 @@ class InfCanvas:
             return np.zeros(
                 (self.selection_size_h, self.selection_size_w, 4), dtype=np.uint8
             )
-
-
-
-
-# async def main():
-#     database_url = "https://nyucapstone-7c22c-default-rtdb.firebaseio.com"
-#     latest_image_url, latest_image_name = await fetch_latest_image_url(database_url)
-#     console.log(f"async def main() called")
-#     await load_and_draw_image(latest_image_url)
-
-
-#     # Load and draw the image on the second CanvasProxy instance (index 1)
-#     # await load_and_draw_image(latest_image_url)
-
-#     console.log("Image drawn on the canvas from main")
-
-# await main()
-
-
-
-# async def main():
-#     database_url = "https://nyucapstone-7c22c-default-rtdb.firebaseio.com"
-#     latest_image_url, latest_image_name = await fetch_latest_image_url(database_url)
-#     console.log(f"async def main() called")
-#     await load_and_draw_image_wrapper(latest_image_url)
-
-   
-
-#     # Load and draw the image on the InfCanvas
-#     # np_image = await inf_canvas.load_and_draw_image(latest_image_url)
-#     # inf_canvas.draw_buffer(np_image)
-#     console.log("Image drawn on the canvas from main")
-    
-
-# # Call the main function
-# # import asyncio
-# # loop = asyncio.get_event_loop()
-# # loop.run_until_complete(main())
-
-# await main()

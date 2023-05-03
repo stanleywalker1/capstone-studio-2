@@ -38,16 +38,32 @@ import json
 from enum import Enum
 from utils import *
 
+# load environment variables from the .env file
+with open(".env") as f:
+    for line in f:
+        if line.startswith("#") or not line.strip():
+            continue
+        name, value = line.strip().split("=", 1)
+        os.environ[name] = value
 
-def get_latest_image_url(database_url):
-    response = requests.get(f"{database_url}/latestImage.json")
-    latest_image_data = response.json()
-    image_url = latest_image_data['downloadURL']
-    image_name = latest_image_data['fileName']
-    return image_url, image_name
 
-database_url = 'https://nyucapstone-7c22c-default-rtdb.firebaseio.com'
-latest_image_url, latest_image_name = get_latest_image_url(database_url)
+access_token = os.environ.get("HF_ACCESS_TOKEN")
+print("access_token from HF 1:", access_token)
+
+
+
+
+
+
+# def get_latest_image_url(database_url):
+#     response = requests.get(f"{database_url}/latestImage.json")
+#     latest_image_data = response.json()
+#     image_url = latest_image_data['downloadURL']
+#     image_name = latest_image_data['fileName']
+#     return image_url, image_name
+
+# database_url = 'https://nyucapstone-7c22c-default-rtdb.firebaseio.com'
+# latest_image_url, latest_image_name = get_latest_image_url(database_url)
 # print(f"Latest image URL: {latest_image_url}")
 # print(f"Latest image name: {latest_image_name}")
 
@@ -210,7 +226,7 @@ model = {}
 
 
 def get_token():
-    token = ""
+    token = "{access_token}"
     if os.path.exists(".token"):
         with open(".token", "r") as f:
             token = f.read()
@@ -339,8 +355,9 @@ class StableDiffusionInpaint:
                     )
                 else:
                     inpaint = StableDiffusionInpaintPipeline.from_pretrained(
-                        model_name, use_auth_token=token, vae=vae
+                        model_name, use_auth_token=access_token, vae=vae
                     )
+                    print(f"access_token from HF:", access_token)
             if os.path.exists("./embeddings"):
                 print("Note that StableDiffusionInpaintPipeline + embeddings is untested")
                 for item in os.listdir("./embeddings"):
