@@ -1,0 +1,7 @@
+[build]
+  command = "python app.py"
+  publish = "public"
+  runtime = "python-3.9"
+
+[build.environment]
+  PYTHON_VERSION = "3.9"
