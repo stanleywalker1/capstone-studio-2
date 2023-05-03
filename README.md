@@ -7,6 +7,7 @@ next steps:
 - rearchitecture tool bar into styled css buttons/minimalistic design
 - intergrate liveblocks.io
 - redesign ui/ux
+- draw box moves window frame
 
 
 
