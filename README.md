@@ -12,9 +12,8 @@ next steps:
 
 ![outpaint](infinite-place-hackathon-demo.jpeg)
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/1ff0821d-46e6-452a-85a1-2e9c8fe391b1/deploy-status)](https://app.netlify.com/sites/stannocapstonebeta/deploys)
 
-
-https://user-images.githubusercontent.com/1665437/197244111-51884b3b-dffe-4dcf-a82a-fa5117c79934.mp4
 
 ## Status
 
