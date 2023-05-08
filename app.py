@@ -1270,7 +1270,9 @@ except:
 if RUN_IN_SPACE:
     demo.launch(share=True)
 elif args.debug:
-    launch_kwargs["server_name"] = "0.0.0.0"
-    demo.queue().launch(**launch_kwargs)
+    # launch_kwargs["server_name"] = "0.0.0.0"
+    # demo.queue().launch(**launch_kwargs)
+    demo.queue().launch(share=True)
 else:
-    demo.queue().launch(**launch_kwargs)
+    # demo.queue().launch(**launch_kwargs)
+    demo.queue().launch(share=True)
