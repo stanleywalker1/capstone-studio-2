@@ -2,6 +2,8 @@
 // import { w2ui,w2toolbar,w2field,query,w2alert, w2utils,w2confirm} from "https://cdn.jsdelivr.net/gh/vitmalina/w2ui@master/dist/w2ui.es6.min.js"
 
 // https://stackoverflow.com/questions/36280818/how-to-convert-file-to-base64-in-javascript
+
+// stanley checkin
 function getBase64(file) {
     var reader = new FileReader();
     reader.readAsDataURL(file);
