@@ -107,9 +107,9 @@ open_setting = function() {
         });
 }
 
-var button_lst=["clear", "load", "save", "export", "upload", "selection", "canvas", "eraser", "accept", "cancel", "retry", "prev", "current", "next", "eraser_size_btn", "eraser_size", "resize_selection", "scale", "zoom_in", "zoom_out", "help"];
-var upload_button_lst=['clear', 'load', 'save', "upload", 'export',  'resize_selection', 'help', "setting", "interrogate"];
-var resize_button_lst=['clear', 'load', 'save', "upload", 'export', "selection", "canvas", "eraser",  'resize_selection',"zoom_in", "zoom_out", 'help', "setting", "interrogate"];
+var button_lst=["clear", "load", "save", "export", "upload", "selection", "canvas", "eraser","outpaint", "accept", "cancel", "retry", "prev", "current", "next", "eraser_size_btn", "eraser_size", "resize_selection", "scale", "zoom_in", "zoom_out", "help"];
+var upload_button_lst=['clear', 'load', 'save', "upload", 'export', "outpaint", 'resize_selection', 'help', "setting", "interrogate"];
+var resize_button_lst=['clear', 'load', 'save', "upload", 'export', "selection", "outpaint", "canvas", "eraser",  'resize_selection',"zoom_in", "zoom_out", 'help', "setting", "interrogate"];
 var outpaint_button_lst=['clear', 'load', 'save', "canvas", "eraser", "upload", 'export', 'resize_selection', "zoom_in", "zoom_out",'help', "setting", "interrogate", "undo", "redo"];
 var outpaint_result_lst=["accept", "cancel", "retry", "prev", "current", "next"];
 var outpaint_result_func_lst=["accept", "retry", "prev", "current", "next"];
@@ -121,7 +121,9 @@ function check_button(id,text="",checked=true,tooltip="")
 
 var toolbar=new w2toolbar({
     box: "#toolbar",
+    style   : "border: 10px solid red",
     name: "toolbar",
+    style   : "border: 1px solid red",
     tooltip: "top",
     items: [
         { type: "button", id: "clear", text: "Reset", tooltip: "Reset Canvas", icon: "fa-solid fa-rectangle-xmark" },
@@ -138,6 +140,7 @@ var toolbar=new w2toolbar({
         { type: "break" },
         { type: "button", id: "interrogate", text: "Interrogate", tooltip: "Get a prompt with Clip Interrogator ", icon: "fa-solid fa-magnifying-glass" },
         { type: "break" },
+        { type: "button", id: "outpaint", text: "Outpaint", tooltip: "Run Outpainting", icon: "fa-solid fa-brush" },
         { type: "button", id: "accept", text: "Accept", tooltip: "Accept current result", icon: "fa-solid fa-check", hidden: true, disabled:true,},
         { type: "button", id: "cancel", text: "Cancel", tooltip: "Cancel current outpainting/error", icon: "fa-solid fa-ban", hidden: true},
         { type: "button", id: "retry", text: "Retry", tooltip: "Retry", icon: "fa-solid fa-rotate", hidden: true, disabled:true,},
@@ -665,3 +668,33 @@ window.update_undo_redo=function(s0,s1)
     window.undo_redo_state.undo=s0;
     window.undo_redo_state.redo=s1;
 }
+
+// const uploadButton = document.querySelector('#upload');
+// uploadButton.addEventListener('click', (event) => {
+//     // handle upload logic here
+// });
+
+// const loadButton = document.querySelector('#load');
+// loadButton.addEventListener('click', (event) => {
+//     // handle load logic here
+// });
+
+// const saveButton = document.querySelector('#save');
+// saveButton.addEventListener('click', (event) => {
+//     // handle save logic here
+// });
+
+// const outpaintButton = document.querySelector('#outpaint');
+// outpaintButton.addEventListener('click', (event) => {
+//     // handle outpaint logic here
+// });
+
+// const acceptButton = document.querySelector('#accept');
+// acceptButton.addEventListener('click', (event) => {
+//     // handle accept logic here
+// });
+
+// const confirmButton = document.querySelector('#confirm');
+// confirmButton.addEventListener('click', (event) => {
+//     // handle confirm logic here
+// });

@@ -1,15 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Stablediffusion Infinity</title>
+<title>stanley capstone</title>
 <meta charset="utf-8">
 
 
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/lkwq007/stablediffusion-infinity@v0.1.2/css/w2ui.min.css">
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/lkwq007/stablediffusion-infinity@v0.1.2/js/w2ui.min.js"></script>
+<!-- <link rel="stylesheet" type="text/css" href="css/w2ui.min.css"> -->
+<!-- <script type="text/javascript" src="js/w2ui.min.js"></script> -->
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-<script src="https://cdn.jsdelivr.net/gh/lkwq007/stablediffusion-infinity@v0.1.2/js/fabric.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/gh/lkwq007/stablediffusion-infinity@v0.1.2/js/toolbar.js"></script>
+
+<!-- <script defer src="https://cdn.jsdelivr.net/gh/lkwq007/stablediffusion-infinity@v0.1.2/js/toolbar.js"></script> -->
+<!-- <script defer src="js/toolbar.js"></script> -->
+
+<script defer src="https://cdn.jsdelivr.net/gh/stanleywalker1/capstone-studio-2@main/js/toolbar.js"></script>
+<script defer src="https://cdn.jsdelivr.net/gh/stanleywalker1/capstone-studio-2@main/js/fabric.min.js"></script>
+<!-- <script type="text/javascript" src="https://github.com/stanleywalker1/capstone-studio-2/blob/main/js/w2ui.min.js"></script> -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/stanleywalker1/capstone-studio-2@main/js/w2ui.min.js"></script>
+
+<!-- <link rel="stylesheet" type="text/css" href="https://github.com/stanleywalker1/capstone-studio-2/blob/main/css/w2ui.min.css"> -->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/stanleywalker1/capstone-studio-2@main/css/w2ui.min.css">
+    <!-- <script defer src="https://cdn.jsdelivr.net/gh/stanleywalker1/capstone-studio-2@main/js/toolbar.js"></script>  -->
+
+
 <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
 <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
 
@@ -42,11 +54,12 @@ html, body {
 }
 .control {
   display: none;
+  background-color: aliceblue;
 }
 #outer_container {
   width: 100%;
   height: 100vh;
-  overflow: auto;
+  
 }
 
 #hamburger-menu {
@@ -136,7 +149,7 @@ html, body {
   }
 }
 #toolbar {
-  display: none;
+  display: block;
 }
 
 
@@ -162,55 +175,49 @@ html, body {
 
 </head>
 <body>
-<div>
-
-<button type="button" class="control" id="export">Export</button>
-<button type="button" class="control" id="undo">Undo</button>
-<button type="button" class="control" id="commit">Commit</button>
-<button type="button" class="control" id="transfer">Transfer</button>
-<button type="button" class="control" id="upload">Upload</button>
-<button type="button" class="control" id="draw">Draw</button>
-<input type="text" id="mode" value="selection" class="control">
-<input type="text" id="setup" value="0" class="control">
-<input type="text" id="upload_content" value="0" class="control">
-<textarea rows="1" id="selbuffer" name="selbuffer" class="control"></textarea>
-<fieldset class="control">
     <div>
-      <input type="radio" id="mode0" name="mode" value="0" checked>
-      <label for="mode0">SelBox</label>
+    <button type="button" class="control" id="export">Export</button>
+    <button type="button" class="control" id="outpaint">Outpaint</button>
+    <button type="button" class="control" id="undo">Undo</button>
+    <button type="button" class="control" id="commit">Commit</button>
+    <button type="button" class="control" id="transfer">Transfer</button>
+    <button type="button" class="control" id="upload">Upload</button>
+    <button type="button" class="control" id="draw">Draw</button>
+    <input type="text" id="mode" value="selection" class="control">
+    <input type="text" id="setup" value="0" class="control">
+    <input type="text" id="upload_content" value="0" class="control">
+    <textarea rows="1" id="selbuffer" name="selbuffer" class="control"></textarea>
+    <fieldset class="control">
+        <div>
+            <input type="radio" id="mode0" name="mode" value="0" checked>
+            <label for="mode0">SelBox</label>
+        </div>
+        <div>
+            <input type="radio" id="mode1" name="mode" value="1">
+            <label for="mode1">Image</label>
+        </div>
+        <div>
+            <input type="radio" id="mode2" name="mode" value="2">
+            <label for="mode2">Brush</label>
+        </div>
+    </fieldset>
     </div>
-    <div>
-      <input type="radio" id="mode1" name="mode" value="1">
-      <label for="mode1">Image</label>
+    <div id = "outer_container">
+    <div id = "container">
+        <canvas id = "canvas0"></canvas>
+        <canvas id = "canvas1"></canvas>
+        <canvas id = "canvas2"></canvas>
+        <canvas id = "canvas3"></canvas>
+        <canvas id = "canvas4"></canvas>
+        <div id="overlay_container" style="pointer-events: none">
+        <canvas id = "overlay_canvas" width="1" height="1"></canvas>
+        </div>
     </div>
-    <div>
-      <input type="radio" id="mode2" name="mode" value="2">
-      <label for="mode2">Brush</label>
-    </div>
-</fieldset>
-</div>
-<div id="hamburger-menu">
-    <i class="fa-solid fa-bars"></i>
-  </div>
-  <button type="button"id="outpaint">Outpaint</button>
-<div id = "outer_container">
-<div style="position: relative;">
+    <input type="file" name="file" id="upload_file" accept="image/*" hidden>
+    <input type="file" name="state" id="upload_state" accept=".sdinf" hidden>
+    <div style="position: relative;">
     <div id="toolbar" style></div>
-</div> 
-<div id = "container">
-  <canvas id = "canvas0"></canvas>
-  <canvas id = "canvas1"></canvas>
-  <canvas id = "canvas2"></canvas>
-  <canvas id = "canvas3"></canvas>
-  <canvas id = "canvas4"></canvas>
-  <div id="overlay_container" style="pointer-events: none">
-    <canvas id = "overlay_canvas" width="1" height="1"></canvas>
-  </div>
-</div>
-<input type="file" name="file" id="upload_file" accept="image/*" hidden>
-<input type="file" name="state" id="upload_state" accept=".sdinf" hidden>
-
-</div>
+    </div>
 </div>
 
 
