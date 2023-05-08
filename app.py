@@ -969,13 +969,15 @@ function (x)
         ret = f.read()
     return ret
 
-toolbar_html_code = '''
-<div id="toolbar_container">
-  <div id="toolbar" style></div>
-</div>
-'''
+# toolbar_js = load_js("toolbar", global_frame="parent.document")
 
-toolbar_html = gr.HTML(f"{toolbar_html_code}<script>{toolbar_js}</script>")
+# toolbar_html_code = '''
+# <div id="toolbar_container">
+#   <div id="toolbar" style></div>
+# </div>
+# '''
+
+# toolbar_html = gr.HTML(f"{toolbar_html_code}<script>{toolbar_js}</script>")
 
 
   
@@ -1039,7 +1041,7 @@ with blocks as demo:
         sd_prompt = gr.Textbox(
             label="Prompt", placeholder="input your prompt here!", lines=2
         )
-        toolbar_html = gr.HTML(f"{toolbar_html_code}<script>{toolbar_js}</script>")
+        #  toolbar_html = gr.HTML(f"{toolbar_html_code}<script>{toolbar_js}</script>")
         with gr.Accordion("developer tools", open=True):
             with gr.Row(elem_id="setup_row"):
                 with gr.Column(scale=4, min_width=350):
