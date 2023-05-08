@@ -969,6 +969,17 @@ function (x)
         ret = f.read()
     return ret
 
+toolbar_html_code = '''
+<div id="toolbar_container">
+  <div id="toolbar" style></div>
+</div>
+'''
+
+toolbar_html = gr.HTML(f"{toolbar_html_code}<script>{toolbar_js}</script>")
+
+
+  
+
 
 proceed_button_js = load_js("proceed")
 setup_button_js = load_js("setup")
@@ -1015,7 +1026,7 @@ with blocks as demo:
 
     setup_button = gr.Button("Click to Start", variant="primary")
    
-
+  
     if not RUN_IN_SPACE:
         model_choices_lst = [item.value for item in ModelChoice]
         if args.local_model:
@@ -1028,6 +1039,7 @@ with blocks as demo:
         sd_prompt = gr.Textbox(
             label="Prompt", placeholder="input your prompt here!", lines=2
         )
+        toolbar_html = gr.HTML(f"{toolbar_html_code}<script>{toolbar_js}</script>")
         with gr.Accordion("developer tools", open=True):
             with gr.Row(elem_id="setup_row"):
                 with gr.Column(scale=4, min_width=350):
