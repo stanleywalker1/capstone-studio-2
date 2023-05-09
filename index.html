@@ -17,7 +17,7 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/stanleywalker1/capstone-studio-2@main/js/w2ui.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/gh/stanleywalker1/capstone-studio-2@main/js/fabric.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/gh/stanleywalker1/capstone-studio-2@latest/js/toolbar2.js"></script>
+<script defer src="https://cdn.jsdelivr.net/gh/stanleywalker1/capstone-studio-2@latest/js/toolbar4.js"></script>
 <!-- <script defer src="/js/toolbar.js"></script> -->
 
 
@@ -152,6 +152,9 @@ html, body {
 
 #toolbar {
     display: block;
+    height: 200px;
+    background: #212121;
+    border: 1px solid #4a4a4a;
 }
 .outpaint-button {
   /* Add your desired styles here */
@@ -261,6 +264,10 @@ html, body {
     background-position: 0% 50%;
   }
 }
+#tb_toolbar_item_outpaint .w2ui-tb-icon {
+  background-color: #f0f0f0;
+  /* Add other styles you want to override */
+}
 
 
 
@@ -327,6 +334,8 @@ html, body {
 
 
     alert("starting js");
+
+       
 
 
 
@@ -418,8 +427,27 @@ html, body {
         });
     });
 }
+
+function overrideW2uiStyles() {
+        const outpaintElement = document.getElementById("tb_toolbar_item_outpaint");
+        
+        if (!outpaintElement) {
+            setTimeout(overrideW2uiStyles, 200); // Check again after 200ms
+            return;
+        }
+
+        // Set a specific style property
+       
+         outpaintElement.style.height = "100px";
+         outpaintElement.style.border = "2px solid transparent"
+         outpaintElement.style.backgroundColor = "#424242";
+         outpaintElement.style.color = "#ffffff";
+        }
+
+        // Execute the function to start checking
+        overrideW2uiStyles();
     
-    
+window.addEventListener("applyCustomStyles", overrideW2uiStyles);
 document.getElementById("hamburger-menu").addEventListener("click", toggleToolbar);
   alert("js loaded");
 </script>
@@ -465,10 +493,14 @@ from js import (
     uploadImageToFirebase,
     firebase,
     aws,
-    fetch
+    fetch,
+    overrideW2uiStyles
+
 )
 answer = aws("hello", 1, 2)
 console.log(answer)
+
+
 
 #addPhoto("demo")
 
@@ -832,6 +864,7 @@ async def zoom_in_func(event):
             base.update_scale(scale)
         scale=base.scale
         update_scale(f"{base.width}x{base.height} ({round(100/scale)}%)")
+        await js.overrideW2uiStyles()
 
 async def zoom_out_func(event):
     base=base_lst[0]
@@ -845,6 +878,7 @@ async def zoom_out_func(event):
             base.update_scale(scale)
         scale=base.scale
         update_scale(f"{base.width}x{base.height} ({round(100/scale)}%)")
+        await js.overrideW2uiStyles()
 
 async def sync_func(event):
     base=base_lst[0]
