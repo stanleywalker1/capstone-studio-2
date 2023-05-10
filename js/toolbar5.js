@@ -219,11 +219,11 @@ function getBase64(file) {
                 { type: "button", id: "random_seed", tooltip: "Set a random seed", icon: "fa-solid fa-dice" },
                 ]
             },
-            { type: 'spacer' },
             { type: "button", id: "zoom_in", tooltip: "Zoom In", icon: "fa-solid fa-magnifying-glass-plus" },
             { type: "button", id: "zoom_out", tooltip: "Zoom Out", icon: "fa-solid fa-magnifying-glass-minus" },
          
-            { type: "button", id: "outpaint", text: "Outpaint", icon: "fa-solid fa-wand-magic-sparkles" },
+            { type: 'spacer' },
+            { type: "button", id: "outpaint", text: "GROW", icon: "fa-solid fa-wand-magic-sparkles" },
             { type: "button", id: "accept", text: "Accept", tooltip: "Accept current result", icon: "fa-solid fa-check", hidden: true, disabled:true,},
             { type: "button", id: "cancel", text: "Cancel", tooltip: "Cancel current outpainting/error", icon: "fa-solid fa-ban", hidden: true},
             { type: "button", id: "confirm", text: "Confirm", icon: "fa-solid fa-check", hidden: true,disabled:true,},

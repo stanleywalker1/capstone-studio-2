@@ -150,20 +150,6 @@ html, body {
   }
 }
 
-#toolbar {
-    display: block;
-    height: 200px;
-    background: #212121;
-    border: 1px solid #4a4a4a;
-}
-.outpaint-button {
-  /* Add your desired styles here */
-  background-color: #f0f0f0;
-  color: #333;
-}
-
-
-
 .generate-button {
   background-color: #f1f1f1;
   border: none;
@@ -206,6 +192,7 @@ html, body {
   animation: gradient-animation 6s linear infinite;
   z-index: -1;
 }
+
 
 #hamburger-menu i {
   font-size: 24px;
@@ -264,10 +251,17 @@ html, body {
     background-position: 0% 50%;
   }
 }
-#tb_toolbar_item_outpaint .w2ui-tb-icon {
-  background-color: #f0f0f0;
-  /* Add other styles you want to override */
+
+#toolbar {
+    display: block;
+    height: 200px;
+    background: #0C0F19;
 }
+
+.w2ui-toolbar .w2ui-scroll-wrapper .w2ui-tb-button-hover {
+    background-color: #713870; /* Change this to the desired hover background color */
+}
+
 
 
 
@@ -429,25 +423,183 @@ html, body {
 }
 
 function overrideW2uiStyles() {
-        const outpaintElement = document.getElementById("tb_toolbar_item_outpaint");
+        const toolbar = document.querySelector(".w2ui-toolbar");
+
+        if (!toolbar) {
+        setTimeout(overrideW2uiStyles, 200); // Check again after 200ms
+        return;
+        }
+        toolbar.style.backgroundColor = "#0C0F19";
         
+        
+
+
+        const toolbarButtons = document.querySelectorAll(".w2ui-toolbar .w2ui-scroll-wrapper .w2ui-tb-button");
+
+        toolbarButtons.forEach(button => {
+        button.style.border = "4px solid rgb(67, 55, 201)";
+        button.style.backgroundColor = "#1F2937";
+        button.style.color = "#ffffff";
+        button.style.fontSize = "16px";
+        button.style.fontWeight = 600;
+        
+
+        const nestedText = button.querySelector("div.w2ui-tb-text:nth-child(1)");
+            if (nestedText) {
+                nestedText.style.color = "rgb(255, 255, 255)";
+            }
+
+
+        // Add event listeners for mouseover and mouseout events
+        button.addEventListener("mouseenter", () => {
+            button.style.backgroundColor = "#4B5563";
+        });
+        button.addEventListener("mouseleave", () => {
+            button.style.backgroundColor = "#1F2937";
+        });
+        });
+
+        const outpaintElement = document.getElementById("tb_toolbar_item_outpaint");
         if (!outpaintElement) {
             setTimeout(overrideW2uiStyles, 200); // Check again after 200ms
             return;
         }
-
-        // Set a specific style property
-       
-         outpaintElement.style.height = "100px";
-         outpaintElement.style.border = "2px solid transparent"
-         outpaintElement.style.backgroundColor = "#424242";
-         outpaintElement.style.color = "#ffffff";
+  
+        const nestedDiv1 = outpaintElement.querySelector("#tb_toolbar_item_outpaint > div:nth-child(2)");
+        const nestedDiv2 = outpaintElement.querySelector("div.w2ui-tb-icon span.fa-solid.fa-wand-magic-sparkles");
+        
+        if (nestedDiv1) {
+        nestedDiv1.style.color = "white";
         }
 
-        // Execute the function to start checking
+        if (nestedDiv2) {
+        nestedDiv2.style.fontSize = "30px"; 
+        }
+       
+        outpaintElement.style.height = "70px";
+        outpaintElement.style.border = "4px solid rgb(67, 55, 201)";
+        outpaintElement.style.backgroundColor = "rgb(31, 41, 55)";
+        outpaintElement.style.color = "rgb(255, 255, 255)";
+        outpaintElement.style.fontSize = "16px";
+        outpaintElement.style.fontWeight = "600";
+        outpaintElement.style.width = "200px";
+        outpaintElement.style.lineHeight = "50px";
+        outpaintElement.style.textAlign = "center";
+        outpaintElement.style.borderRadius = "40px";
+        outpaintElement.style.display = "flex";
+        outpaintElement.style.alignItems = "center";
+        outpaintElement.style.justifyContent = "center";
+
+        const devButtonElement = document.getElementById("tb_toolbar_item_developer_options");
+
+        if (!devButtonElement) {
+            setTimeout(overrideW2uiStyles, 200); // Check again after 200ms
+            return;
+        }
+        devButtonElement.style.height = "40px";
+        devButtonElement.style.backgroundColor = "rgb(31, 41, 55)";
+        devButtonElement.style.color = "rgb(255, 255, 255)";
+        devButtonElement.style.fontSize = "16px";
+        devButtonElement.style.fontWeight = "600";
+        devButtonElement.style.width = "200px";
+        devButtonElement.style.lineHeight = "50px";
+        devButtonElement.style.textAlign = "center";
+        devButtonElement.style.borderRadius = "40px";
+        devButtonElement.style.display = "flex";
+        devButtonElement.style.alignItems = "center";
+        devButtonElement.style.justifyContent = "center";
+
+
+        const zoomOutButtonElement = document.getElementById("tb_toolbar_item_zoom_out");
+        if (!zoomOutButtonElement) {
+            setTimeout(overrideW2uiStyles, 200); // Check again after 200ms
+            return;
+        }
+        zoomOutButtonElement.style.height = "45px";
+        zoomOutButtonElement.style.width = "45px";
+        zoomOutButtonElement.style.backgroundColor = "rgb(31, 41, 55)";
+        zoomOutButtonElement.style.color = "rgb(255, 255, 255)";
+        zoomOutButtonElement.style.fontSize = "16px";
+        zoomOutButtonElement.style.fontWeight = "600";
+        zoomOutButtonElement.style.lineHeight = "50px";
+        zoomOutButtonElement.style.textAlign = "center";
+        zoomOutButtonElement.style.borderRadius = "40px";
+        zoomOutButtonElement.style.display = "flex";
+        zoomOutButtonElement.style.alignItems = "center";
+        zoomOutButtonElement.style.justifyContent = "center";
+        
+
+        const zoomInButtonElement = document.getElementById("tb_toolbar_item_zoom_in");
+        if (!zoomInButtonElement) {
+            setTimeout(overrideW2uiStyles, 200); // Check again after 200ms
+            return;
+        }
+        zoomInButtonElement.style.height = "45px";
+        zoomInButtonElement.style.width = "45px";
+        zoomInButtonElement.style.backgroundColor = "rgb(31, 41, 55)";
+        zoomInButtonElement.style.color = "rgb(255, 255, 255)";
+        zoomInButtonElement.style.fontSize = "16px";
+        zoomInButtonElement.style.fontWeight = "600";
+        zoomInButtonElement.style.lineHeight = "50px";
+        zoomInButtonElement.style.textAlign = "center";
+        zoomInButtonElement.style.borderRadius = "40px";
+        zoomInButtonElement.style.display = "flex";
+        zoomInButtonElement.style.alignItems = "center";
+        zoomInButtonElement.style.justifyContent = "center";
+        
+        
+       // html body div#outer_container div div#toolbar.w2ui-reset.w2ui-toolbar div.w2ui-tb-line div.w2ui-scroll-wrapper.w2ui-eaction div#tb_toolbar_item_accept.w2ui-tb-button
+        // html body div#outer_container div div#toolbar.w2ui-reset.w2ui-toolbar div.w2ui-tb-line div.w2ui-scroll-wrapper.w2ui-eaction div#tb_toolbar_item_accept.w2ui-tb-button.disabled.hidden
+        const acceptButtonElement = document.getElementById("tb_toolbar_item_accept");
+        if (!acceptButtonElement) {
+            setTimeout(overrideW2uiStyles, 200); // Check again after 200ms
+            return;
+        }
+        acceptButtonElement.style.height = "45px";
+        acceptButtonElement.style.width = "100px";
+        acceptButtonElement.style.backgroundColor = "rgb(31, 41, 55)";
+        acceptButtonElement.style.color = "rgb(255, 255, 255)";
+        acceptButtonElement.style.fontSize = "16px";
+        acceptButtonElement.style.fontWeight = "600";
+        acceptButtonElement.style.lineHeight = "50px";
+        acceptButtonElement.style.textAlign = "center";
+        acceptButtonElement.style.borderRadius = "40px";
+        acceptButtonElement.style.display = "flex";
+        acceptButtonElement.style.alignItems = "center";
+        acceptButtonElement.style.justifyContent = "center";
+        //html body div#outer_container div div#toolbar.w2ui-reset.w2ui-toolbar div.w2ui-tb-line div.w2ui-scroll-wrapper.w2ui-eaction div#tb_toolbar_item_cancel.w2ui-tb-button
+        //html body div#outer_container div div#toolbar.w2ui-reset.w2ui-toolbar div.w2ui-tb-line div.w2ui-scroll-wrapper.w2ui-eaction div#tb_toolbar_item_cancel.w2ui-tb-button.hidden
+        
+        // #tb_toolbar_item_cancel
+        // html body div#outer_container div div#toolbar.w2ui-reset.w2ui-toolbar div.w2ui-tb-line div.w2ui-scroll-wrapper.w2ui-eaction div#tb_toolbar_item_cancel.w2ui-tb-button
+        const cancelButtonElement = document.getElementById("tb_toolbar_item_cancel");
+        if (!cancelButtonElement) {
+            setTimeout(overrideW2uiStyles, 200); // Check again after 200ms
+            return;
+        }
+        cancelButtonElement.style.height = "45px";
+        cancelButtonElement.style.width = "100px";
+        cancelButtonElement.style.backgroundColor = "rgb(31, 41, 55)";
+        cancelButtonElement.style.color = "rgb(255, 255, 255)";
+        cancelButtonElement.style.fontSize = "16px";
+        cancelButtonElement.style.fontWeight = "600";
+        cancelButtonElement.style.lineHeight = "50px";
+        cancelButtonElement.style.textAlign = "center";
+        cancelButtonElement.style.borderRadius = "40px";
+        cancelButtonElement.style.display = "flex";
+        cancelButtonElement.style.alignItems = "center";
+        cancelButtonElement.style.justifyContent = "center";
+
+        
+        
+    }
+
+        
+
+        // Execute style function to start checking
         overrideW2uiStyles();
     
-window.addEventListener("applyCustomStyles", overrideW2uiStyles);
+//window.addEventListener("applyCustomStyles", overrideW2uiStyles);
 document.getElementById("hamburger-menu").addEventListener("click", toggleToolbar);
   alert("js loaded");
 </script>
@@ -669,6 +821,7 @@ async def draw_canvas_func(event):
     base_lst[0]=canvas
 
     alert("made it to end of draw_canvas gradio")
+    
 
 
 import js 
@@ -692,6 +845,7 @@ async def export_func(event):
     link.href = "data:image/png;base64," + base64_str
     link.click()
     console.log(f"Canvas saved to {filename}.png")
+    
 
 img_candidate_lst=[None,0]
 
@@ -718,6 +872,9 @@ async def outpaint_func(event):
     arr=base.base64_to_numpy(lst[idx%len(lst)])
     base.fill_selection(arr)
     base.draw_selection_box()
+    js.overrideW2uiStyles()
+    
+    
 
 async def undo_func(event):
     base=base_lst[0]
@@ -744,6 +901,7 @@ async def commit_func(event):
 
     # Call the JavaScript function to upload the image to Firebase storage
     await js.uploadImageToFirebase(base64_str, time_str)
+    
     
 
 async def history_undo_func(event):
@@ -785,6 +943,7 @@ async def transfer_func(event):
         app=app.shadowRoot
     app.querySelector("#input textarea").value=sel_buffer_str
     app.querySelector("#proceed").click()
+    
 
 async def upload_func(event):
     base=base_lst[0]
@@ -864,7 +1023,7 @@ async def zoom_in_func(event):
             base.update_scale(scale)
         scale=base.scale
         update_scale(f"{base.width}x{base.height} ({round(100/scale)}%)")
-        await js.overrideW2uiStyles()
+        js.overrideW2uiStyles()
 
 async def zoom_out_func(event):
     base=base_lst[0]
@@ -878,12 +1037,14 @@ async def zoom_out_func(event):
             base.update_scale(scale)
         scale=base.scale
         update_scale(f"{base.width}x{base.height} ({round(100/scale)}%)")
-        await js.overrideW2uiStyles()
+        js.overrideW2uiStyles()
 
 async def sync_func(event):
     base=base_lst[0]
     base.sync_to_buffer()
     base.canvas[2].clear()
+    js.overrideW2uiStyles()
+    
 
 async def eraser_size_func(event):
     base=base_lst[0]
@@ -956,6 +1117,7 @@ async def message_func(event):
         await upload_func(event)
     elif event.data[0]=="outpaint":
         await outpaint_func(event)
+        js.overrideW2uiStyles()
     elif event.data[0]=="mode":
         if event.data[1]!="selection":
             await sync_func(event)
