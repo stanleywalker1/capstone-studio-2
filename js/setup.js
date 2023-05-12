@@ -3,7 +3,12 @@ function(token_val, width, height, size, model_choice, model_path){
     app=app.shadowRoot??app;
     app.querySelector("#sdinfframe").style.height=80+Number(height)+"px";
     // app.querySelector("#setup_row").style.display="none";
-    app.querySelector("#model_path_input").style.display="none";
+    // app.querySelector("#model_path_input").style.display="none";
+
+    let modelPathInput = app.querySelector("#model_path_input");
+    if (modelPathInput) {
+        modelPathInput.style.display = "none";
+    }
     let frame=app.querySelector("#sdinfframe").contentWindow.document;
 
     if(frame.querySelector("#setup").value=="0")

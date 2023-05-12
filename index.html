@@ -17,8 +17,8 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/stanleywalker1/capstone-studio-2@main/js/w2ui.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/gh/stanleywalker1/capstone-studio-2@main/js/fabric.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/gh/stanleywalker1/capstone-studio-2@latest/js/toolbar4.js"></script>
-<!-- <script defer src="/js/toolbar.js"></script> -->
+<script defer src="https://cdn.jsdelivr.net/gh/stanleywalker1/capstone-studio-2@latest/js/toolbar5.js"></script>
+
 
 
 
@@ -763,7 +763,71 @@ async def draw_canvas() -> None:
         # print("No latest image found in Firebase.")
 
 
+# new draw_canvas 
+
+from PIL import ImageOps
+
+from PIL import ImageOps
+
 async def draw_canvas_func(event):
+    alert("draw_canvas gradio called")
+    
+    database_url = "https://nyucapstone-7c22c-default-rtdb.firebaseio.com"
+    image_data, latest_image_name = await fetch_latest_image_url(database_url)
+    pil_image = Image.open(io.BytesIO(image_data.to_py()))
+
+    np_image = np.array(pil_image)
+
+    # Get the dimensions of the input image
+    img_height, img_width, _ = np_image.shape
+
+    # Set the desired display dimensions
+    display_width = 1024
+    display_height = 768
+
+    # Calculate the zoom level based on the input image dimensions and the desired display dimensions
+    zoom_level = min(display_width / img_width, display_height / img_height)
+
+    # Pad the input image to fit the canvas buffer while maintaining the aspect ratio
+    padded_image = ImageOps.pad(pil_image, (int(display_width), int(display_height)), Image.ANTIALIAS, color=(0, 0, 0, 0))
+    padded_np_image = np.array(padded_image)
+
+    # Set the canvas dimensions to match the desired display dimensions
+    width = display_width
+    height = display_height
+    selection_size = min(width, height) // 2
+
+    document.querySelector("#container").style.width = f"{width}px"
+    document.querySelector("#container").style.height = f"{height}px"
+
+    canvas = InfCanvas(int(width), int(height), selection_size=int(selection_size), firebase_image_data=padded_np_image)
+
+    canvas.setup_mouse()
+    canvas.clear_background()
+    canvas.draw_buffer()
+    canvas.draw_selection_box()
+
+    # Update the canvas buffer with the padded image data and redraw the buffer
+    h, w, c = canvas.buffer.shape
+    canvas.sync_to_buffer()
+    canvas.buffer_dirty = True
+
+    # Create a mask using the padded image shape
+    mask = padded_np_image[:, :, 3:4].repeat(4, axis=2)
+    canvas.buffer[mask > 0] = 0
+    canvas.buffer[:height, :width] += padded_np_image
+
+    canvas.draw_buffer()
+
+    base_lst[0] = canvas
+
+    alert("made it to end of draw_canvas gradio")
+
+
+
+
+# original draw_canvas
+async def test_canvas_func(event):
     alert("draw_canvas gradio called")
     try:
         app=parent.document.querySelector("gradio-app")
@@ -793,8 +857,6 @@ async def draw_canvas_func(event):
     canvas.draw_buffer()
     canvas.draw_selection_box()
 
-    # await canvas.load_image(image_data)
-
 
     # Update the canvas buffer with the new image data and redraw the buffer
     h, w, c = canvas.buffer.shape
@@ -805,16 +867,15 @@ async def draw_canvas_func(event):
     w_min = min(w, np_image.shape[1])
 
 
+    # Create a mask using the entire np_image shape
+    mask = np_image[:, :, 3:4].repeat(4, axis=2)
+    canvas.buffer[mask > 0] = 0
+    canvas.buffer[0:h, 0:w, :] += np_image
 
-    #  mask = np_image[:, :, 3:4].repeat(4, axis=2)
-    #  canvas.buffer[mask > 0] = 0
-    #  canvas.buffer[0:h, 0:w, :] += np_image
-
-    mask = np_image[:h_min, :w_min, 3:4].repeat(4, axis=2)
-    canvas.buffer[:h_min, :w_min][mask > 0] = 0
-    canvas.buffer[:h_min, :w_min] += np_image[:h_min, :w_min]
-    
-    
+    # Create a mask using a cropped np_image shape
+    # mask = np_image[:h_min, :w_min, 3:4].repeat(4, axis=2)
+    # canvas.buffer[:h_min, :w_min][mask > 0] = 0
+    # canvas.buffer[:h_min, :w_min] += np_image[:h_min, :w_min]
     
     canvas.draw_buffer()
 
