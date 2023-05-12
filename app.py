@@ -48,19 +48,19 @@ if os.path.exists(".env"):
 
 
 access_token = os.environ.get("HF_ACCESS_TOKEN")
-print("access_token from HF 1:", access_token)
+# print("access_token from HF 1:", access_token)
 
 
 
-def query(payload, model_id, api_token):
-	headers = {"Authorization": f"Bearer {api_token}"}
-	API_URL = f"https://api-inference.huggingface.co/models/{model_id}"
-	response = requests.post(API_URL, headers=headers, json=payload)
-	return response.json()
+# def query(payload, model_id, api_token):
+# 	headers = {"Authorization": f"Bearer {api_token}"}
+# 	API_URL = f"https://api-inference.huggingface.co/models/{model_id}"
+# 	response = requests.post(API_URL, headers=headers, json=payload)
+# 	return response.json()
 
-model_id = "stabilityai/stable-diffusion-2-inpainting"
-api_token = "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" # get yours at hf.co/settings/tokens
-data = query("The goal of life is [MASK].", model_id, api_token)
+# model_id = "stabilityai/stable-diffusion-2-inpainting"
+# api_token = "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" # get yours at hf.co/settings/tokens
+# data = query("The goal of life is [MASK].", model_id, api_token)
 
 
 
@@ -234,13 +234,22 @@ if args.auth is not None:
 
 model = {}
 
+#  HF function for token
+# def get_token():
+#     token = "{access_token}"
+#     if os.path.exists(".token"):
+#         with open(".token", "r") as f:
+#             token = f.read()
+#             print("get_token called", token)
+#     token = os.environ.get("hftoken", token)
+#     return token
 
+# run local function 
 def get_token():
-    token = "{access_token}"
+    token = ""
     if os.path.exists(".token"):
         with open(".token", "r") as f:
             token = f.read()
-            print("get_token called", token)
     token = os.environ.get("hftoken", token)
     return token
 
@@ -366,9 +375,9 @@ class StableDiffusionInpaint:
                     )
                 else:
                     inpaint = StableDiffusionInpaintPipeline.from_pretrained(
-                        model_name, use_auth_token=access_token, vae=vae
+                        model_name, use_auth_token=token, vae=vae
                     )
-                    print(f"access_token from HF:", access_token)
+                    #  print(f"access_token from HF:", access_token)
             if os.path.exists("./embeddings"):
                 print("Note that StableDiffusionInpaintPipeline + embeddings is untested")
                 for item in os.listdir("./embeddings"):
@@ -1033,7 +1042,7 @@ with blocks as demo:
             label="Prompt", placeholder="input your prompt here!", lines=2
         )
         #  toolbar_html = gr.HTML(f"{toolbar_html_code}<script>{toolbar_js}</script>")
-        with gr.Accordion("developer tools", open=False):
+        with gr.Accordion("machine learning options", open=False):
             with gr.Row(elem_id="setup_row"):
                 with gr.Column(scale=4, min_width=350):
                     token = gr.Textbox(
